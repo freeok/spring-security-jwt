@@ -3,7 +3,7 @@ package work.pcdd.securityjwt.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.NoHandlerFoundException;
-import work.pcdd.securityjwt.common.vo.Result;
+import work.pcdd.securityjwt.model.vo.Result;
 
 import javax.servlet.http.HttpServletRequest;
 

@@ -1,4 +1,4 @@
-package work.pcdd.securityjwt.common.vo;
+package work.pcdd.securityjwt.model.vo;
 
 
 import lombok.Data;

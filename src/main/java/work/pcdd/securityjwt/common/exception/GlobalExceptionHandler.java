@@ -3,8 +3,6 @@ package work.pcdd.securityjwt.common.exception;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -12,7 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
-import work.pcdd.securityjwt.common.vo.Result;
+import work.pcdd.securityjwt.model.vo.Result;
 
 /**
  * RestControllerAdvice只能捕获controller层的异常，无法捕获filter中的异常
@@ -68,4 +66,5 @@ public class GlobalExceptionHandler {
     public Result handle(NoHandlerFoundException e) {
         return Result.fail(404, "请求的资源不存在");
     }
+
 }

@@ -1,7 +1,5 @@
-package work.pcdd.securityjwt.common.dto;
+package work.pcdd.securityjwt.model.dto;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -17,7 +15,7 @@ import java.time.LocalDateTime;
  * @date 2021/4/3 23:18
  */
 @Data
-public class PersonalDto implements Serializable {
+public class PersonalDTO implements Serializable {
 
     private Long id;
 
@@ -33,4 +31,5 @@ public class PersonalDto implements Serializable {
     private LocalDateTime created;
 
     private String role;
+
 }

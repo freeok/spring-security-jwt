@@ -1,9 +1,9 @@
 package work.pcdd.securityjwt.service;
 
-import work.pcdd.securityjwt.common.dto.LoginDto;
-import work.pcdd.securityjwt.common.vo.Result;
-import work.pcdd.securityjwt.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import work.pcdd.securityjwt.model.dto.LoginDTO;
+import work.pcdd.securityjwt.model.entity.User;
+import work.pcdd.securityjwt.model.vo.Result;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,10 +21,10 @@ public interface UserService extends IService<User> {
      * 用户登录
      *
      * @param loginDto 用户名和密码dto
-     * @param resp HttpServletResponse
+     * @param resp     HttpServletResponse
      * @return json
      */
-    Result login(LoginDto loginDto, HttpServletResponse resp);
+    Result login(LoginDTO loginDto, HttpServletResponse resp);
 
 
 }
