@@ -10,8 +10,8 @@ import java.io.Serializable;
 /**
  * 用户登录实体类
  *
- * @author 1907263405@qq.com
- * @date 2021/3/24 19:56
+ * @author pcdd
+ * @date 2021/3/24
  */
 @Data
 public class LoginDTO implements Serializable {

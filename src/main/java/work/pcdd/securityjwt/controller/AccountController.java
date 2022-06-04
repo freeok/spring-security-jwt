@@ -15,8 +15,8 @@ import work.pcdd.securityjwt.service.UserService;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @author 1907263405@qq.com
- * @date 2021/4/3 22:40
+ * @author pcdd
+ * @date 2021/4/3
  */
 @Slf4j
 @RestController

@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
  * 处理 filter 中的异常
  * 和 FilterExceptionHandler 任选其一
  *
- * @author 1907263405@qq.com
- * @date 2021/4/4 20:13
+ * @author pcdd
+ * @date 2021/4/4
  */
 @RestController
 public class ErrorController {

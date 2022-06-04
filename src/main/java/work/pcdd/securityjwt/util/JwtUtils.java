@@ -13,8 +13,8 @@ import work.pcdd.securityjwt.model.entity.User;
 import java.util.Date;
 
 /**
- * @author 1907263405@qq.com
- * @date 2021/4/3 23:22
+ * @author pcdd
+ * @date 2021/4/3
  */
 @Slf4j
 @Component

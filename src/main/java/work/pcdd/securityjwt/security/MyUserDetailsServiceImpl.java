@@ -16,8 +16,8 @@ import work.pcdd.securityjwt.service.UserService;
 /**
  * 很关键的一个类，授权就在这里
  *
- * @author 1907263405@qq.com
- * @date 2021/3/27 2:54
+ * @author pcdd
+ * @date 2021/3/27
  */
 @Slf4j
 @Service

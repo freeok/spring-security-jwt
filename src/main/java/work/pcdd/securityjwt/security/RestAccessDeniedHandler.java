@@ -17,8 +17,8 @@ import java.io.PrintWriter;
  * 当接口没有权限时，自定义返回结果
  * 其实这个类可以不用写，通过捕获AccessDeniedException异常即可，若两者都写了，则优先捕获全局异常
  *
- * @author 1907263405@qq.com
- * @date 2021/3/24 21:59
+ * @author pcdd
+ * @date 2021/3/24
  */
 @Slf4j
 @Component
