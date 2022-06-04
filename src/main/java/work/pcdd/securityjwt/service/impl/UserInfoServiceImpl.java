@@ -8,12 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import work.pcdd.securityjwt.mapper.UserMapper;
+import work.pcdd.securityjwt.mapper.UserInfoMapper;
 import work.pcdd.securityjwt.model.dto.LoginDTO;
 import work.pcdd.securityjwt.model.dto.PersonalDTO;
-import work.pcdd.securityjwt.model.entity.User;
+import work.pcdd.securityjwt.model.entity.UserInfo;
 import work.pcdd.securityjwt.model.vo.Result;
-import work.pcdd.securityjwt.service.UserService;
+import work.pcdd.securityjwt.service.IUserInfoService;
 import work.pcdd.securityjwt.util.JwtUtils;
 
 import javax.servlet.http.HttpServletResponse;
@@ -24,10 +24,10 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Slf4j
 @Service
-public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> implements IUserInfoService {
 
     @Autowired
-    JwtUtils jwtUtils;
+    private JwtUtils jwtUtils;
 
     @Value("${jwt.tokenHeader}")
     private String header;
@@ -35,21 +35,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public Result login(LoginDTO loginDTO, HttpServletResponse resp) {
 
-        User user = this.getOne(new QueryWrapper<User>()
+        UserInfo userInfo = this.getOne(new QueryWrapper<UserInfo>()
                 .eq("username", loginDTO.getUsername())
                 .eq("password", loginDTO.getPassword()));
 
-        Assert.notNull(user, "用户名或密码错误");
-        Assert.isTrue(user.getStatus() != -1, "该账户被锁定");
-        Assert.isTrue(user.getStatus() != 0, "该账户被禁用");
-        log.info("user：{}", user);
+        Assert.notNull(userInfo, "用户名或密码错误");
+        Assert.isTrue(userInfo.getStatus() != -1, "该账户被锁定");
+        Assert.isTrue(userInfo.getStatus() != 0, "该账户被禁用");
+        log.info("userInfo：{}", userInfo);
 
         // 生成jwt
-        String token = jwtUtils.generateToken(user);
+        String token = jwtUtils.generateToken(userInfo);
         resp.addHeader(header, token);
 
         PersonalDTO personalDTO = new PersonalDTO();
-        BeanUtils.copyProperties(user, personalDTO);
+        BeanUtils.copyProperties(userInfo, personalDTO);
         log.info("personalDto：{}", personalDTO);
 
         return Result.success("登录成功", personalDTO);

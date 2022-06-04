@@ -6,9 +6,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import work.pcdd.securityjwt.model.entity.User;
+import work.pcdd.securityjwt.model.entity.UserInfo;
 import work.pcdd.securityjwt.model.vo.Result;
-import work.pcdd.securityjwt.service.UserService;
+import work.pcdd.securityjwt.service.IUserInfoService;
 import work.pcdd.securityjwt.util.JwtUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,10 +25,10 @@ import java.util.Map;
  * @date 2021-03-26
  */
 @RestController
-public class UserController {
+public class UserInfoController {
 
     @Autowired
-    UserService userService;
+    IUserInfoService IUserInfoService;
     @Autowired
     JwtUtils jwtUtils;
 
@@ -44,7 +44,7 @@ public class UserController {
         return Result.success("只要认证（登录），此接口就会调用成功");
     }
 
-    //    @Secured("ROLE_admin")
+    //@Secured("ROLE_admin")
     // 这样写的话，admin就无法调用此接口了，若想接口user和admin都调用，不写@PreAuthorize注解即可
     @PreAuthorize("hasRole('user')")
     @GetMapping("/fun3")
@@ -71,12 +71,12 @@ public class UserController {
 
     @GetMapping("/token")
     public Result token() {
-        User user = new User();
-        user.setId(1L);
-        user.setRole("admin");
+        UserInfo userInfo = new UserInfo();
+        userInfo.setId(1L);
+        userInfo.setRole("admin");
         Map<String, Object> map = new HashMap<>();
-        map.put("user", user);
-        map.put("token", jwtUtils.generateToken(user));
+        map.put("user", userInfo);
+        map.put("token", jwtUtils.generateToken(userInfo));
         return Result.success(map);
     }
 

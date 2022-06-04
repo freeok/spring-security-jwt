@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import work.pcdd.securityjwt.model.dto.LoginDTO;
 import work.pcdd.securityjwt.model.vo.Result;
-import work.pcdd.securityjwt.service.UserService;
+import work.pcdd.securityjwt.service.IUserInfoService;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -23,18 +23,11 @@ import javax.servlet.http.HttpServletResponse;
 public class AccountController {
 
     @Autowired
-    UserService userService;
-
-    @GetMapping("/abc")
-    public Result err() {
-        return Result.fail(-1, "filter异常");
-    }
+    IUserInfoService userInfoService;
 
     @PostMapping("/login")
     public Result login(@Validated @RequestBody LoginDTO loginDTO, HttpServletResponse resp) {
-        log.info("登录Controller执行！");
-        log.info("AccountController loginDTO = " + loginDTO);
-        return userService.login(loginDTO, resp);
+        return userInfoService.login(loginDTO, resp);
     }
 
     @PreAuthorize("isAuthenticated()")
