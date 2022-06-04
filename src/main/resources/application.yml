@@ -3,21 +3,18 @@ server:
   servlet:
     encoding:
       charset: UTF-8
-
-  # @RestControllerAdvice无法捕获的Filter异常指向这里，和FilterExceptionHandler任选其一
 #  error:
-#    path: /filterEx
-
+#    path: /abc
 
 spring:
   application:
-    name: securityjwt
-
+    name: security-jwt
+  main:
+    allow-circular-references: true #允许循环依赖
   jackson:
     default-property-inclusion: non_null
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
-
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/spring_security?
@@ -29,6 +26,7 @@ spring:
     password: root
 
 mybatis-plus:
+  type-aliases-package: work.pcdd.securityjwt.model.entity.*
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
@@ -39,6 +37,5 @@ jwt:
   tokenHead: Bearer
   # JWT加密使用的密钥
   secret: 561fe233edf79a72b12f99965b8d16d545be4a1ac661fcee9c80adb72dd55111
-  # JWT的有效期（60*60*24 1天）
-  expire: 604800
-
+  # JWT的有效期（单位秒，60*60*24 1天）
+  expire: 5

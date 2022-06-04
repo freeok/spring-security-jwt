@@ -4,7 +4,6 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 /**
  * @author pc
@@ -12,10 +11,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @MapperScan("work.pcdd.securityjwt.mapper")
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @SpringBootApplication
-public class SecurityJwtApplication {
+public class Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(SecurityJwtApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
 
 }

@@ -1,8 +1,8 @@
 package work.pcdd.securityjwt.mapper;
 
-import org.springframework.stereotype.Repository;
-import work.pcdd.securityjwt.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.springframework.stereotype.Repository;
+import work.pcdd.securityjwt.model.entity.User;
 
 /**
  * <p>

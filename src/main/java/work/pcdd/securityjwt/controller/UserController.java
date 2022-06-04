@@ -6,14 +6,15 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import work.pcdd.securityjwt.common.vo.Result;
-import work.pcdd.securityjwt.entity.User;
-import work.pcdd.securityjwt.security.UserDetailsServiceImpl;
+import work.pcdd.securityjwt.model.entity.User;
+import work.pcdd.securityjwt.model.vo.Result;
 import work.pcdd.securityjwt.service.UserService;
 import work.pcdd.securityjwt.util.JwtUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
@@ -28,21 +29,18 @@ public class UserController {
 
     @Autowired
     UserService userService;
-
     @Autowired
     JwtUtils jwtUtils;
 
     @PreAuthorize("hasRole('admin')")
     @GetMapping("/fun1")
     public Result fun1(HttpServletResponse resp) {
-        return Result.success("当前正在访问系统的用户的详细信息"
-                , SecurityContextHolder.getContext().getAuthentication());
+        return Result.success("当前正在访问系统的用户的详细信息", SecurityContextHolder.getContext().getAuthentication());
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/fun2")
     public Result fun2(HttpServletRequest req, HttpServletResponse resp) {
-        //System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         return Result.success("只要认证（登录），此接口就会调用成功");
     }
 
@@ -74,10 +72,12 @@ public class UserController {
     @GetMapping("/token")
     public Result token() {
         User user = new User();
-        user.setId(123L);
-        user.setRole("user");
-        return Result.success(jwtUtils.generateToken(user));
+        user.setId(1L);
+        user.setRole("admin");
+        Map<String, Object> map = new HashMap<>();
+        map.put("user", user);
+        map.put("token", jwtUtils.generateToken(user));
+        return Result.success(map);
     }
-
 
 }

@@ -1,10 +1,11 @@
 package work.pcdd.securityjwt.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
-import work.pcdd.securityjwt.common.vo.Result;
+import work.pcdd.securityjwt.model.vo.Result;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -19,11 +20,13 @@ import java.io.PrintWriter;
  * @author 1907263405@qq.com
  * @date 2021/3/24 21:59
  */
+@Slf4j
 @Component
 public class RestAccessDeniedHandler implements AccessDeniedHandler {
+
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) throws IOException, ServletException {
-        System.out.println("------------------当接口没有权限时，自定义返回结果");
+        log.info("------------------当接口没有权限时，自定义返回结果");
 
         response.setContentType("application/json;charset=utf-8");
         // 设置状态码为403
@@ -34,4 +37,5 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler {
         out.flush();
         out.close();
     }
+
 }
