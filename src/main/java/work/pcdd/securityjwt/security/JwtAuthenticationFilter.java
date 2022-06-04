@@ -22,8 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * @author 1907263405@qq.com
- * @date 2021/3/27 0:27
+ * @author pcdd
+ * @date 2021/3/27
  */
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {

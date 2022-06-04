@@ -16,8 +16,8 @@ import work.pcdd.securityjwt.security.RestAccessDeniedHandler;
 import work.pcdd.securityjwt.security.RestAuthorizationEntryPoint;
 
 /**
- * @author 1907263405@qq.com
- * @date 2021/3/26 23:56
+ * @author pcdd
+ * @date 2021/3/26
  */
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {

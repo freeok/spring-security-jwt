@@ -20,8 +20,8 @@ import work.pcdd.securityjwt.model.vo.Result;
  * 如果不使用@ResponseStatus，在处理方法正确执行的前提下，后台返回HTTP响应的状态码为200
  * 其实就是调用了response.setStatus方法
  *
- * @author 1907263405@qq.com
- * @date 2021/2/23 21:00
+ * @author pcdd
+ * @date 2021/2/23
  */
 @Slf4j
 @RestControllerAdvice

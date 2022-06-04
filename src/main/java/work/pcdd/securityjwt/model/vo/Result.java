@@ -4,8 +4,8 @@ package work.pcdd.securityjwt.model.vo;
 import lombok.Data;
 
 /**
- * @author 1907263405@qq.com
- * @date 2021/3/24 3:34
+ * @author pcdd
+ * @date 2021/3/24
  */
 @Data
 public class Result {

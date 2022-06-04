@@ -11,8 +11,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * @author 1907263405@qq.com
- * @date 2021/4/3 23:18
+ * @author pcdd
+ * @date 2021/4/3
  */
 @Data
 public class PersonalDTO implements Serializable {

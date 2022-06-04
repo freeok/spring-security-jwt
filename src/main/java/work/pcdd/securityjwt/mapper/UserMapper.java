@@ -6,11 +6,11 @@ import work.pcdd.securityjwt.model.entity.User;
 
 /**
  * <p>
- *  Mapper 接口
+ * Mapper 接口
  * </p>
  *
- * @author 1907263405@qq.com
- * @since 2021-03-26
+ * @author pcdd
+ * @date 2021-03-26
  */
 @Repository
 public interface UserMapper extends BaseMapper<User> {

@@ -15,8 +15,8 @@ import java.io.PrintWriter;
 /**
  * 当未登录或token失效时访问接口时，自定义的返回结果
  *
- * @author 1907263405@qq.com
- * @date 2021/3/24 21:52
+ * @author pcdd
+ * @date 2021/3/24
  */
 @Slf4j
 @Component

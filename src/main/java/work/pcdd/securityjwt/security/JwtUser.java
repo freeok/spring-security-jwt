@@ -1,7 +1,5 @@
 package work.pcdd.securityjwt.security;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,8 +11,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @author 1907263405@qq.com
- * @date 2021/3/27 3:22
+ * @author pcdd
+ * @date 2021/3/27
  */
 @Data
 public class JwtUser implements UserDetails {
