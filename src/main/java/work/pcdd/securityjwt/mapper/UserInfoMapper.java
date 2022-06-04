@@ -2,7 +2,7 @@ package work.pcdd.securityjwt.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.stereotype.Repository;
-import work.pcdd.securityjwt.model.entity.User;
+import work.pcdd.securityjwt.model.entity.UserInfo;
 
 /**
  * <p>
@@ -13,6 +13,6 @@ import work.pcdd.securityjwt.model.entity.User;
  * @date 2021-03-26
  */
 @Repository
-public interface UserMapper extends BaseMapper<User> {
+public interface UserInfoMapper extends BaseMapper<UserInfo> {
 
 }

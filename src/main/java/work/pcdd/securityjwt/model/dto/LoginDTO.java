@@ -17,7 +17,7 @@ import java.io.Serializable;
 public class LoginDTO implements Serializable {
 
     @NotBlank(message = "用户名不能为空")
-    @Length(max = 30, message = "密码长度不能超过30位")
+    @Length(max = 30, message = "用户名长度不能超过30位")
     private String username;
 
     @NotBlank(message = "密码不能为空")

@@ -8,7 +8,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import work.pcdd.securityjwt.model.entity.User;
+import work.pcdd.securityjwt.model.entity.UserInfo;
 
 import java.util.Date;
 
@@ -29,10 +29,10 @@ public class JwtUtils {
     /**
      * 根据用户id，role 生成token
      *
-     * @param user 用户
+     * @param userInfo 用户
      * @return 生成的token
      */
-    public String generateToken(User user) {
+    public String generateToken(UserInfo userInfo) {
         log.info("开始生成token");
         Date nowDate = new Date();
         Date expireDate = new Date(nowDate.getTime() + expire * 1000);
@@ -44,11 +44,11 @@ public class JwtUtils {
                     // 生成签名的时间(可选)
                     .withIssuedAt(nowDate)
                     // 签名的观众 也可以理解谁接受签名的
-                    .withAudience(String.valueOf(user.getId()))
+                    .withAudience(String.valueOf(userInfo.getId()))
                     // 签名过期的时间
                     .withExpiresAt(expireDate)
                     // 生成携带自定义信息 这里为角色权限
-                    .withClaim("role", user.getRole())
+                    .withClaim("role", userInfo.getRole())
                     // 使用HMAC256加密算法构建密钥信息,密钥是secret
                     .sign(Algorithm.HMAC256(secret));
 

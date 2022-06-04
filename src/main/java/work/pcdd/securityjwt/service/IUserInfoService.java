@@ -2,7 +2,7 @@ package work.pcdd.securityjwt.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import work.pcdd.securityjwt.model.dto.LoginDTO;
-import work.pcdd.securityjwt.model.entity.User;
+import work.pcdd.securityjwt.model.entity.UserInfo;
 import work.pcdd.securityjwt.model.vo.Result;
 
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author pcdd
  * @date 2021-03-26
  */
-public interface UserService extends IService<User> {
+public interface IUserInfoService extends IService<UserInfo> {
 
     /**
      * 用户登录
@@ -25,6 +25,5 @@ public interface UserService extends IService<User> {
      * @return json
      */
     Result login(LoginDTO loginDto, HttpServletResponse resp);
-
 
 }

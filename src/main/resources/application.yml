@@ -3,8 +3,6 @@ server:
   servlet:
     encoding:
       charset: UTF-8
-#  error:
-#    path: /abc
 
 spring:
   application:
@@ -17,7 +15,7 @@ spring:
     time-zone: GMT+8
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/spring_security?
+    url: jdbc:mysql://localhost:3306/security_jwt?
       serverTimezone=Asia/Shanghai
       &useUnicode=true
       &characterEncoding=utf8

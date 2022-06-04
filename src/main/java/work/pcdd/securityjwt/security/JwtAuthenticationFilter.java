@@ -11,8 +11,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import work.pcdd.securityjwt.model.entity.User;
-import work.pcdd.securityjwt.service.UserService;
+import work.pcdd.securityjwt.model.entity.UserInfo;
+import work.pcdd.securityjwt.service.IUserInfoService;
 import work.pcdd.securityjwt.util.JwtUtils;
 
 import javax.servlet.FilterChain;
@@ -33,7 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtils jwtUtils;
     @Autowired
-    private UserService userService;
+    private IUserInfoService userInfoService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse resp, FilterChain filterChain) throws ServletException, IOException {
@@ -56,14 +56,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String userId = JWT.decode(token).getAudience().get(0);
 
         // 根据userId查询username
-        User user = userService.getOne(new LambdaQueryWrapper<User>()
-                .eq(User::getId, userId)
-                .select(User::getUsername));
+        UserInfo userInfo = userInfoService.getOne(new LambdaQueryWrapper<UserInfo>()
+                .eq(UserInfo::getId, userId)
+                .select(UserInfo::getUsername));
 
-        Assert.notNull(user, "用户不存在");
+        Assert.notNull(userInfo, "用户不存在");
 
         // token合法性通过，开始校验有效性（根据用户名判断持有此token的用户的当前状态是否正常）
-        UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
+        UserDetails userDetails = userDetailsService.loadUserByUsername(userInfo.getUsername());
         log.info("userDetails:" + userDetails);
         log.info("Authorities:" + userDetails.getAuthorities());
 
