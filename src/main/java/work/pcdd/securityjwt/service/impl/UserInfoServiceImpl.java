@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import work.pcdd.securityjwt.common.util.JwtUtils;
+import work.pcdd.securityjwt.common.util.R;
 import work.pcdd.securityjwt.mapper.UserInfoMapper;
 import work.pcdd.securityjwt.model.dto.LoginDTO;
 import work.pcdd.securityjwt.model.dto.UserInfoDTO;
 import work.pcdd.securityjwt.model.entity.UserInfo;
-import work.pcdd.securityjwt.model.vo.Result;
 import work.pcdd.securityjwt.service.IUserInfoService;
 
 /**
@@ -27,7 +27,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
     private JwtUtils jwtUtils;
 
     @Override
-    public Result login(LoginDTO loginDTO) {
+    public R login(LoginDTO loginDTO) {
         UserInfo userInfo = this.getOne(new QueryWrapper<UserInfo>()
                 .eq("username", loginDTO.getUsername())
                 .eq("password", loginDTO.getPassword()));
@@ -45,7 +45,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         userInfoDTO.setToken(token);
         log.info("userInfoDTO：{}", userInfoDTO);
 
-        return Result.success("登录成功", userInfoDTO);
+        return R.ok("登录成功", userInfoDTO);
     }
 
 }

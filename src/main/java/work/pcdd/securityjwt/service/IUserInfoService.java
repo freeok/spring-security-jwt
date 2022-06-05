@@ -1,9 +1,9 @@
 package work.pcdd.securityjwt.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import work.pcdd.securityjwt.common.util.R;
 import work.pcdd.securityjwt.model.dto.LoginDTO;
 import work.pcdd.securityjwt.model.entity.UserInfo;
-import work.pcdd.securityjwt.model.vo.Result;
 
 /**
  * <p>
@@ -21,6 +21,6 @@ public interface IUserInfoService extends IService<UserInfo> {
      * @param loginDto 登录DTO
      * @return token
      */
-    Result login(LoginDTO loginDto);
+    R login(LoginDTO loginDto);
 
 }

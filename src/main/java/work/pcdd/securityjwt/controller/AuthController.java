@@ -6,8 +6,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import work.pcdd.securityjwt.common.util.R;
 import work.pcdd.securityjwt.model.dto.LoginDTO;
-import work.pcdd.securityjwt.model.vo.Result;
 import work.pcdd.securityjwt.service.IUserInfoService;
 
 /**
@@ -22,7 +22,7 @@ public class AuthController {
     IUserInfoService userInfoService;
 
     @PostMapping("/login")
-    public Result login(@Validated @RequestBody LoginDTO loginDTO) {
+    public R login(@Validated @RequestBody LoginDTO loginDTO) {
         return userInfoService.login(loginDTO);
     }
 

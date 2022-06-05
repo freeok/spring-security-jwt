@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-import work.pcdd.securityjwt.model.vo.Result;
+import work.pcdd.securityjwt.common.util.R;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -79,7 +79,7 @@ public class FilterErrorController extends BasicErrorController {
         response.setStatus(HttpStatus.NOT_FOUND.value());
         response.getWriter()
                 .write(new ObjectMapper().writeValueAsString(
-                        Result.fail(404, "请求的资源不存在")));
+                        R.fail(404, "请求的资源不存在")));
         return null;
     }
 
