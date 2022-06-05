@@ -5,18 +5,15 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import work.pcdd.securityjwt.common.util.JwtUtils;
 import work.pcdd.securityjwt.mapper.UserInfoMapper;
 import work.pcdd.securityjwt.model.dto.LoginDTO;
-import work.pcdd.securityjwt.model.dto.PersonalDTO;
+import work.pcdd.securityjwt.model.dto.UserInfoDTO;
 import work.pcdd.securityjwt.model.entity.UserInfo;
 import work.pcdd.securityjwt.model.vo.Result;
 import work.pcdd.securityjwt.service.IUserInfoService;
-import work.pcdd.securityjwt.util.JwtUtils;
-
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author pcdd
@@ -29,12 +26,8 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
     @Autowired
     private JwtUtils jwtUtils;
 
-    @Value("${jwt.tokenHeader}")
-    private String header;
-
     @Override
-    public Result login(LoginDTO loginDTO, HttpServletResponse resp) {
-
+    public Result login(LoginDTO loginDTO) {
         UserInfo userInfo = this.getOne(new QueryWrapper<UserInfo>()
                 .eq("username", loginDTO.getUsername())
                 .eq("password", loginDTO.getPassword()));
@@ -44,15 +37,15 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         Assert.isTrue(userInfo.getStatus() != 0, "该账户被禁用");
         log.info("userInfo：{}", userInfo);
 
-        // 生成jwt
+        // 生成jwt token
         String token = jwtUtils.generateToken(userInfo);
-        resp.addHeader(header, token);
 
-        PersonalDTO personalDTO = new PersonalDTO();
-        BeanUtils.copyProperties(userInfo, personalDTO);
-        log.info("personalDto：{}", personalDTO);
+        UserInfoDTO userInfoDTO = new UserInfoDTO();
+        BeanUtils.copyProperties(userInfo, userInfoDTO);
+        userInfoDTO.setToken(token);
+        log.info("userInfoDTO：{}", userInfoDTO);
 
-        return Result.success("登录成功", personalDTO);
+        return Result.success("登录成功", userInfoDTO);
     }
 
 }

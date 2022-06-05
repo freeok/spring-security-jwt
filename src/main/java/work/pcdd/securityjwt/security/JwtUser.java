@@ -1,79 +1,26 @@
 package work.pcdd.securityjwt.security;
 
-import lombok.Data;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author pcdd
  * @date 2021/3/27
  */
-@Data
-public class JwtUser implements UserDetails {
+@Getter
+public class JwtUser extends User {
 
     private static final long serialVersionUID = 1L;
+    private final Long userId;
+    private final String email;
 
-    private final Long id;
-
-    private final String username;
-
-    private final String password;
-
-    private final Collection<? extends GrantedAuthority> authorities;
-
-    private final boolean enabled;
-
-
-    /*public JwtUser(Long id, String username, String password, List<GrantedAuthority> authorities, boolean enabled) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.authorities = mapToGrantedAuthorities(authorities);
-        this.enabled = enabled;
-    }
-
-    public JwtUser(Long id, String username, String password, String authoritie, boolean enabled) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.authorities = mapToGrantedAuthorities(authoritie);
-        this.enabled = enabled;
-    }*/
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
-    }
-
-    private List<GrantedAuthority> mapToGrantedAuthorities(String role) {
-        return Collections.singletonList(new SimpleGrantedAuthority(role));
-    }
-
-    private List<GrantedAuthority> mapToGrantedAuthorities(List<String> listRole) {
-        return listRole.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+    public JwtUser(Long userId, String email, String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
+        super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
+        this.userId = userId;
+        this.email = email;
     }
 
 }

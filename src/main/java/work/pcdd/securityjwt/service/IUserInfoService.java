@@ -5,8 +5,6 @@ import work.pcdd.securityjwt.model.dto.LoginDTO;
 import work.pcdd.securityjwt.model.entity.UserInfo;
 import work.pcdd.securityjwt.model.vo.Result;
 
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * <p>
  * 服务类
@@ -20,10 +18,9 @@ public interface IUserInfoService extends IService<UserInfo> {
     /**
      * 用户登录
      *
-     * @param loginDto 用户名和密码dto
-     * @param resp     HttpServletResponse
-     * @return json
+     * @param loginDto 登录DTO
+     * @return token
      */
-    Result login(LoginDTO loginDto, HttpServletResponse resp);
+    Result login(LoginDTO loginDto);
 
 }

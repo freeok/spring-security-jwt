@@ -36,4 +36,4 @@ jwt:
   # JWT加密使用的密钥
   secret: 561fe233edf79a72b12f99965b8d16d545be4a1ac661fcee9c80adb72dd55111
   # JWT的有效期（单位秒，60*60*24 1天）
-  expire: 5
+  expire: 86400

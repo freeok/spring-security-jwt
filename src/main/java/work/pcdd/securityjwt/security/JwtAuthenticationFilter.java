@@ -11,9 +11,9 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+import work.pcdd.securityjwt.common.util.JwtUtils;
 import work.pcdd.securityjwt.model.entity.UserInfo;
 import work.pcdd.securityjwt.service.IUserInfoService;
-import work.pcdd.securityjwt.util.JwtUtils;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
