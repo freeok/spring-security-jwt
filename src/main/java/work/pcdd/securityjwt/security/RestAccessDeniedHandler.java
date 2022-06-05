@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
-import work.pcdd.securityjwt.model.vo.Result;
+import work.pcdd.securityjwt.common.util.R;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +33,7 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler {
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 
         PrintWriter out = response.getWriter();
-        out.write(new ObjectMapper().writeValueAsString(Result.fail(403, "权限不足")));
+        out.write(new ObjectMapper().writeValueAsString(R.fail(403, "权限不足")));
         out.flush();
         out.close();
     }

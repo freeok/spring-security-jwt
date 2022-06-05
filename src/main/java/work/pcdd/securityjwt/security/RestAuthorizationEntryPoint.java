@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
-import work.pcdd.securityjwt.model.vo.Result;
+import work.pcdd.securityjwt.common.util.R;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,7 +30,7 @@ public class RestAuthorizationEntryPoint implements AuthenticationEntryPoint {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         PrintWriter out = response.getWriter();
 
-        out.write(new ObjectMapper().writeValueAsString(Result.fail(401, "访问此资源需要完全身份验证")));
+        out.write(new ObjectMapper().writeValueAsString(R.fail(401, "访问此资源需要完全身份验证")));
         out.flush();
         out.close();
     }

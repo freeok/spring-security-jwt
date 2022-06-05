@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
-import work.pcdd.securityjwt.model.vo.Result;
+import work.pcdd.securityjwt.common.util.R;
 
 /**
  * RestControllerAdvice只能捕获controller层的异常，无法捕获filter中的异常
@@ -31,11 +31,11 @@ public class GlobalExceptionHandler {
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Result handler(MethodArgumentNotValidException e) {
+    public R handler(MethodArgumentNotValidException e) {
         log.error("实体校验异常：", e);
         BindingResult bindingResult = e.getBindingResult();
         ObjectError objectError = bindingResult.getAllErrors().stream().findFirst().get();
-        return Result.fail(400, objectError.getDefaultMessage());
+        return R.fail(400, objectError.getDefaultMessage());
     }
 
     /**
@@ -43,9 +43,9 @@ public class GlobalExceptionHandler {
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
-    public Result handler(IllegalArgumentException e) {
+    public R handler(IllegalArgumentException e) {
         log.error("断言异常：", e);
-        return Result.fail(400, e.getMessage());
+        return R.fail(400, e.getMessage());
     }
 
     /**
@@ -53,9 +53,9 @@ public class GlobalExceptionHandler {
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(JWTVerificationException.class)
-    public Result handler(JWTVerificationException e) {
+    public R handler(JWTVerificationException e) {
         log.error("JWT校验异常：", e);
-        return Result.fail(400, e.getMessage());
+        return R.fail(400, e.getMessage());
     }
 
     /**
@@ -63,8 +63,8 @@ public class GlobalExceptionHandler {
      */
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoHandlerFoundException.class)
-    public Result handle(NoHandlerFoundException e) {
-        return Result.fail(404, "请求的资源不存在");
+    public R handle(NoHandlerFoundException e) {
+        return R.fail(404, "请求的资源不存在");
     }
 
 }
