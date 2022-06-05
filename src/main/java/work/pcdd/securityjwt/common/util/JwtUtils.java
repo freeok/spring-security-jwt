@@ -1,4 +1,4 @@
-package work.pcdd.securityjwt.util;
+package work.pcdd.securityjwt.common.util;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
