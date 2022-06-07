@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,20 +35,27 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private JwtUtils jwtUtils;
     @Autowired
     private IUserInfoService userInfoService;
+    @Value("${jwt.auth-scheme}")
+    private String authScheme;
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse resp, FilterChain filterChain) throws ServletException, IOException {
         log.info("鉴权过滤器执行");
         log.info("请求的api地址:" + req.getRequestURI());
 
-        String token = req.getHeader("Authorization");
+        String s = req.getHeader("Authorization");
         // 巨坑，之前没写这一段，配置类的antMatchers一直失效；如果请求头中没有Authorization信息则直接放行了
-        if (!StringUtils.hasText(token)) {
-            log.warn("请求未携带token");
+        if (!StringUtils.hasText(s)) {
+            log.warn("请求未携带token，无需校验");
             filterChain.doFilter(req, resp);
             return;
         }
-
+        // 必须以必须以bearer开头
+        Assert.isTrue(s.startsWith(authScheme), "auth-scheme不合法");
+        // 处理空白字符
+        String t = s.trim().replaceAll("\\s+", " ");
+        String token = t.substring(t.indexOf(" ") + 1);
+        System.out.println("token = " + token);
         log.info("请求携带的token：{}", token);
         jwtUtils.verifyToken(token);
         log.info("token校验通过");
