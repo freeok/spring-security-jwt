@@ -48,11 +48,18 @@ public class FilterErrorController extends BasicErrorController {
         // 为null认为404，javax.servlet.error.exception由request.getAttributeNames()取得
         Object ex = request.getAttribute("javax.servlet.error.exception");
 
-        String errMsg = "";
-        // JWT校验异常，此处使用了JDK16特性：instanceof增强
-        if (ex instanceof JWTVerificationException e) {
+        String errMsg = "未匹配到异常信息";
+        if (ex instanceof Exception e) {
             errMsg = e.getMessage();
-            httpStatus = HttpStatus.FAILED_DEPENDENCY;
+
+            // JWT校验异常，此处使用了JDK16特性：instanceof增强
+            if (ex instanceof JWTVerificationException) {
+                httpStatus = HttpStatus.FAILED_DEPENDENCY;
+            }
+            // Spring断言异常
+            if (ex instanceof IllegalArgumentException) {
+                httpStatus = HttpStatus.BAD_REQUEST;
+            }
         }
         if (ex == null) {
             errMsg = "请求的资源不存在";

@@ -67,7 +67,7 @@ public class TestController {
      */
     @GetMapping("/token")
     public R token() {
-        UserInfo userInfo = userInfoService.getById(3);
+        UserInfo userInfo = userInfoService.getById(2);
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         BeanUtils.copyProperties(userInfo, userInfoDTO);
         userInfoDTO.setToken(jwtUtils.generateToken(userInfo));
