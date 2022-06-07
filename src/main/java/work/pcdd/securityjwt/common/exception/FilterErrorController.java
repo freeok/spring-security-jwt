@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorContro
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import work.pcdd.securityjwt.common.util.R;
 
@@ -32,7 +32,7 @@ import java.util.Map;
  * @date 2022/6/4
  */
 @Slf4j
-@RestController
+@Component
 public class FilterErrorController extends BasicErrorController {
 
     public FilterErrorController(ServerProperties serverProperties) {
