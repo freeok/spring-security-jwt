@@ -1,6 +1,7 @@
 package work.pcdd.securityjwt.controller;
 
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -8,10 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import work.pcdd.securityjwt.common.util.JwtUtils;
 import work.pcdd.securityjwt.common.util.R;
+import work.pcdd.securityjwt.model.dto.UserInfoDTO;
 import work.pcdd.securityjwt.model.entity.UserInfo;
-
-import java.util.HashMap;
-import java.util.Map;
+import work.pcdd.securityjwt.service.IUserInfoService;
 
 /**
  * @author pcdd
@@ -21,7 +21,9 @@ import java.util.Map;
 public class TestController {
 
     @Autowired
-    JwtUtils jwtUtils;
+    private JwtUtils jwtUtils;
+    @Autowired
+    private IUserInfoService userInfoService;
 
     @PreAuthorize("hasRole('admin')")
     @GetMapping("/fun1")
@@ -60,15 +62,16 @@ public class TestController {
         return R.ok("这个接口只有匿名用户才能调用，已认证的用户反而无法调用");
     }
 
+    /**
+     * 内存用户申请token
+     */
     @GetMapping("/token")
     public R token() {
-        UserInfo userInfo = new UserInfo();
-        userInfo.setId(1L);
-        userInfo.setRole("admin");
-        Map<String, Object> map = new HashMap<>();
-        map.put("user", userInfo);
-        map.put("token", jwtUtils.generateToken(userInfo));
-        return R.ok(map);
+        UserInfo userInfo = userInfoService.getById(3);
+        UserInfoDTO userInfoDTO = new UserInfoDTO();
+        BeanUtils.copyProperties(userInfo, userInfoDTO);
+        userInfoDTO.setToken(jwtUtils.generateToken(userInfo));
+        return R.ok(userInfoDTO);
     }
 
 }

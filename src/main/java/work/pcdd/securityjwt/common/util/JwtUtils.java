@@ -22,7 +22,6 @@ public class JwtUtils {
 
     @Value("${jwt.expire}")
     private Long expire;
-
     @Value("${jwt.secret}")
     private String secret;
 
