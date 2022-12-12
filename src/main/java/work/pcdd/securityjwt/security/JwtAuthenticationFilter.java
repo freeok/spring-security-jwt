@@ -36,14 +36,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private MyUserDetailsServiceImpl userDetailsService;
 
-    @Value("${jwt.auth-scheme}")
-    private String authScheme;
+    @Value("${jwt.token-prefix}")
+    private String tokenPrefix;
     @Value("${jwt.token-name}")
     private String tokenName;
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse resp, FilterChain filterChain) throws ServletException, IOException {
-        log.info("鉴权过滤器执行");
         log.info("请求的api地址:" + req.getRequestURI());
 
         String s = req.getHeader(tokenName);
@@ -53,8 +52,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(req, resp);
             return;
         }
-        // 必须以必须以bearer开头
-        Assert.isTrue(s.startsWith(authScheme), "auth-scheme不合法");
+        Assert.isTrue(s.startsWith(tokenPrefix), "token-prefix不合法");
         // 处理空白字符
         String t = s.trim().replaceAll("\\s+", " ");
         String token = t.substring(t.indexOf(" ") + 1);
@@ -74,7 +72,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // token合法性通过，开始校验有效性（根据用户名判断持有此token的用户的当前状态是否正常）
         UserDetails userDetails = userDetailsService.loadUserByUsername(userInfo.getUsername());
-        log.info("userDetails:" + userDetails);
+        log.info("UserDetails:" + userDetails);
         log.info("Authorities:" + userDetails.getAuthorities());
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken

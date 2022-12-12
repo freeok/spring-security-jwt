@@ -24,8 +24,8 @@ public class JwtUtils {
     private Long expire;
     @Value("${jwt.secret}")
     private String secret;
-    @Value("${jwt.auth-scheme}")
-    private String authScheme;
+    @Value("${jwt.token-prefix}")
+    private String tokenPrefix;
 
     /**
      * 根据用户id，role 生成token
@@ -39,7 +39,7 @@ public class JwtUtils {
         Date expireDate = new Date(nowDate.getTime() + expire * 1000);
 
         try {
-            return authScheme + " " + JWT.create()
+            return tokenPrefix + " " + JWT.create()
                     // 签名由谁生成(可选)
                     .withIssuer("auth0")
                     // 生成签名的时间(可选)
