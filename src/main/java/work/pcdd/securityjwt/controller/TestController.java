@@ -4,6 +4,7 @@ package work.pcdd.securityjwt.controller;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -63,7 +64,7 @@ public class TestController {
     }
 
     /**
-     * 内存用户申请token
+     * 内存用户申请token，拥有user角色
      */
     @GetMapping("/token")
     public R token() {
@@ -71,6 +72,8 @@ public class TestController {
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         BeanUtils.copyProperties(userInfo, userInfoDTO);
         userInfoDTO.setToken(jwtUtils.generateToken(userInfo));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(authentication);
         return R.ok(userInfoDTO);
     }
 

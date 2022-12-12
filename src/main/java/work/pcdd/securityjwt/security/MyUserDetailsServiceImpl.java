@@ -48,7 +48,7 @@ public class MyUserDetailsServiceImpl implements UserDetailsService {
         Assert.isTrue(userInfo.getStatus() != 0, "该账户被禁用");
         log.info("开始授权");
 
-        // 这里的User是Security内置的类
+        // 这里的User是Spring Security内置的类
         return new User(
                 userInfo.getUsername(),
                 passwordEncoder.encode(userInfo.getPassword()),
@@ -57,7 +57,7 @@ public class MyUserDetailsServiceImpl implements UserDetailsService {
                 true,
                 userInfo.getStatus() != -1,
                 // 授权(设置角色和权限)在这里，字符串以逗号分隔
-                // 大坑，角色必须以 ROLE_ 开头，否则依然是403，就是这个bug搞了一两天
+                // 角色必须以 ROLE_ 开头！否则依然是403
                 AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_" + userInfo.getRole()));
     }
 

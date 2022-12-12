@@ -29,11 +29,11 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 jwt:
-  # JWT存储的请求头
-  token-header: Authorization
+  # JWT加密使用的密钥
+  secret: N8eAgGj@qfJ!N9J8
+  # 存储JWT的请求头
+  token-name: Authorization
   # JWT负载中拿到开头
   auth-scheme: bearer
-  # JWT加密使用的密钥，优点：安全；缺点：每次重启项目已颁发的token均失效，不推荐随机，此处仅为测试
-  secret: ${random.value}
   # JWT的有效期（单位秒，60*60*24 1天）
   expire: 86400
