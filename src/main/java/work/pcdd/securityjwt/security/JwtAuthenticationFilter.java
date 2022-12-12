@@ -43,12 +43,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse resp, FilterChain filterChain) throws ServletException, IOException {
-        log.info("请求的api地址:" + req.getRequestURI());
+        log.info("request uri:" + req.getRequestURI());
 
         String s = req.getHeader(tokenName);
-        // 巨坑，之前没写这一段，配置类的antMatchers一直失效；如果请求头中没有Authorization信息则直接放行了
+        // 如果请求头中没有Authorization信息则直接放行了
         if (!StringUtils.hasText(s)) {
-            log.warn("请求未携带token，无需校验");
+            log.info("请求未携带token");
             filterChain.doFilter(req, resp);
             return;
         }

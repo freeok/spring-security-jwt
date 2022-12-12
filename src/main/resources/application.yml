@@ -5,8 +5,6 @@ server:
       charset: UTF-8
 
 spring:
-  application:
-    name: security-jwt
   main:
     allow-circular-references: true #允许循环依赖
   jackson:

@@ -3,14 +3,14 @@ package work.pcdd.securityjwt.common.exception;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.NoHandlerFoundException;
 import work.pcdd.securityjwt.common.util.R;
+
+import java.util.List;
 
 /**
  * RestControllerAdvice只能捕获controller层的异常，无法捕获filter中的异常
@@ -26,20 +26,21 @@ import work.pcdd.securityjwt.common.util.R;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
     /**
-     * 捕获实体校验异常（MethodArgumentNotValidException）
+     * 捕获实体校验异常
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public R handler(MethodArgumentNotValidException e) {
-        log.error("实体校验异常：", e);
-        BindingResult bindingResult = e.getBindingResult();
-        ObjectError objectError = bindingResult.getAllErrors().stream().findFirst().get();
-        return R.fail(400, objectError.getDefaultMessage());
+        List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
+        String msg = fieldErrors.get(0).getDefaultMessage();
+        log.error("实体校验异常：{}", msg);
+        return R.fail(400, msg);
     }
 
     /**
-     * 捕获断言异常（IllegalArgumentException）
+     * 捕获Spring断言异常
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
@@ -56,15 +57,6 @@ public class GlobalExceptionHandler {
     public R handler(JWTVerificationException e) {
         log.error("JWT校验异常：", e);
         return R.fail(400, e.getMessage());
-    }
-
-    /**
-     * 捕捉404异常
-     */
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(NoHandlerFoundException.class)
-    public R handle(NoHandlerFoundException e) {
-        return R.fail(404, "请求的资源不存在");
     }
 
 }

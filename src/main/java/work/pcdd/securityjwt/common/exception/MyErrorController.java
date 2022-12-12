@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
@@ -33,9 +34,9 @@ import java.util.Map;
  */
 @Slf4j
 @Component
-public class FilterErrorController extends BasicErrorController {
+public class MyErrorController extends BasicErrorController {
 
-    public FilterErrorController(ServerProperties serverProperties) {
+    public MyErrorController(ServerProperties serverProperties) {
         super(new DefaultErrorAttributes(), serverProperties.getError());
     }
 
@@ -45,13 +46,14 @@ public class FilterErrorController extends BasicErrorController {
     @Override
     public ResponseEntity<Map<String, Object>> error(HttpServletRequest request) {
         HttpStatus httpStatus = this.getStatus(request);
-        // 为null认为404，javax.servlet.error.exception由request.getAttributeNames()取得
         Object ex = request.getAttribute("javax.servlet.error.exception");
 
-        String errMsg = "未匹配到异常信息";
-        if (ex instanceof Exception e) {
-            errMsg = e.getMessage();
+        // 有序
+        Map<String, Object> map = new LinkedHashMap<>(3);
+        // 999表示Filter中发生异常，无法被全局异常捕获
+        map.put("code", 999);
 
+        if (ex instanceof Exception e) {
             // JWT校验异常，此处使用了JDK16特性：instanceof增强
             if (ex instanceof JWTVerificationException) {
                 httpStatus = HttpStatus.FAILED_DEPENDENCY;
@@ -60,20 +62,14 @@ public class FilterErrorController extends BasicErrorController {
             if (ex instanceof IllegalArgumentException) {
                 httpStatus = HttpStatus.BAD_REQUEST;
             }
+            map.put("data", e.getMessage());
+        } else {
+            Map<String, Object> originalMsgMap = this.getErrorAttributes(request, this.getErrorAttributeOptions(request, MediaType.ALL));
+            map.put("data", originalMsgMap);
         }
-        if (ex == null) {
-            errMsg = "请求的资源不存在";
-            httpStatus = HttpStatus.NOT_FOUND;
-        }
+        map.put("msg", "Filter异常：" + httpStatus);
 
-        //Map<String, Object> errorAttributes = this.getErrorAttributes(request, this.getErrorAttributeOptions(request, MediaType.ALL));
-
-        // 有序
-        Map<String, Object> map = new LinkedHashMap<>(3);
-        // 999表示Filter中发生异常
-        map.put("code", 999);
-        map.put("msg", "Filter异常");
-        map.put("data", errMsg);
+        log.error("Filter异常：{}", httpStatus);
 
         return new ResponseEntity<>(map, httpStatus);
     }
@@ -82,7 +78,6 @@ public class FilterErrorController extends BasicErrorController {
     @Override
     public ModelAndView errorHtml(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("application/json;charset=utf-8");
-        // 设置状态码为403
         response.setStatus(HttpStatus.NOT_FOUND.value());
         response.getWriter()
                 .write(new ObjectMapper().writeValueAsString(
