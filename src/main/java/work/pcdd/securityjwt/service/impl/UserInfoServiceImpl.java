@@ -37,11 +37,11 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         Assert.isTrue(userInfo.getStatus() != 0, "该账户被禁用");
         log.info("userInfo：{}", userInfo);
 
-        // 生成jwt token
-        String token = jwtUtils.generateToken(userInfo);
-
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         BeanUtils.copyProperties(userInfo, userInfoDTO);
+
+        // 生成jwt token
+        String token = jwtUtils.generateToken(userInfoDTO);
         userInfoDTO.setToken(token);
         log.info("userInfoDTO：{}", userInfoDTO);
 

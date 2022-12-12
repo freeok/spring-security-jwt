@@ -7,9 +7,15 @@ import com.auth0.jwt.exceptions.*;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import work.pcdd.securityjwt.model.entity.UserInfo;
+import work.pcdd.securityjwt.model.dto.TokenInfo;
+import work.pcdd.securityjwt.model.dto.UserInfoDTO;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -26,14 +32,13 @@ public class JwtUtils {
     private String secret;
     @Value("${jwt.token-prefix}")
     private String tokenPrefix;
+    @Value("${jwt.token-name}")
+    private String tokenName;
 
     /**
      * 根据用户id，role 生成token
-     *
-     * @param userInfo 用户
-     * @return 生成的token
      */
-    public String generateToken(UserInfo userInfo) {
+    public String generateToken(UserInfoDTO userInfoDTO) {
         log.info("开始生成token");
         Date nowDate = new Date();
         Date expireDate = new Date(nowDate.getTime() + expire * 1000);
@@ -45,11 +50,13 @@ public class JwtUtils {
                     // 生成签名的时间(可选)
                     .withIssuedAt(nowDate)
                     // 签名的观众 也可以理解谁接受签名的
-                    .withAudience(String.valueOf(userInfo.getId()))
+                    .withAudience(String.valueOf(userInfoDTO.getId()))
                     // 签名过期的时间
                     .withExpiresAt(expireDate)
                     // 生成携带自定义信息 这里为角色权限
-                    .withClaim("role", userInfo.getRole())
+                    .withClaim("role", userInfoDTO.getRole())
+                    .withClaim("tokenName", tokenName)
+                    .withClaim("tokenPrefix", tokenPrefix)
                     // 使用HMAC256加密算法构建密钥信息,密钥是secret
                     .sign(Algorithm.HMAC256(secret));
 
@@ -65,10 +72,9 @@ public class JwtUtils {
      */
     public void verifyToken(String token) {
         log.info("开始校验token");
-        String userId;
         try {
             // 从解密的token中获取userId
-            userId = JWT.decode(token).getAudience().get(0);
+            String userId = JWT.decode(token).getAudience().get(0);
             DecodedJWT jwt = JWT.decode(token);
             log.info("userId:{} 角色：{}", userId, jwt.getClaim("role"));
 
@@ -93,5 +99,29 @@ public class JwtUtils {
         }
     }
 
+    public TokenInfo getTokenInfo() {
+        HttpServletRequest request = ServletUtils.getHttpServletRequest();
+        return getTokenInfo(request.getHeader(tokenName));
+    }
+
+    public TokenInfo getTokenInfo(String s) {
+        if (s == null) {
+            return null;
+        }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+
+        String token = s.substring(s.indexOf(" ") + 1);
+        DecodedJWT jwt = JWT.decode(token);
+        TokenInfo tokenInfo = new TokenInfo();
+        tokenInfo.setTokenName(jwt.getClaim("tokenName").asString());
+        tokenInfo.setTokenPrefix(jwt.getClaim("tokenPrefix").asString());
+        tokenInfo.setTokenValue(token);
+        tokenInfo.setLoginId(Long.valueOf(jwt.getAudience().get(0)));
+        tokenInfo.setAuthorities(authorities);
+        tokenInfo.setTokenTimeout((jwt.getExpiresAt().getTime() - System.currentTimeMillis()) / 1000);
+
+        return tokenInfo;
+    }
 
 }

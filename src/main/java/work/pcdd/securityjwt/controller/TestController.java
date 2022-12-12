@@ -4,8 +4,6 @@ package work.pcdd.securityjwt.controller;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import work.pcdd.securityjwt.common.util.JwtUtils;
@@ -25,12 +23,6 @@ public class TestController {
     private JwtUtils jwtUtils;
     @Autowired
     private IUserInfoService userInfoService;
-
-    @PreAuthorize("hasRole('admin')")
-    @GetMapping("/fun1")
-    public R fun1() {
-        return R.ok("当前正在访问系统的用户的详细信息", SecurityContextHolder.getContext().getAuthentication());
-    }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/fun2")
@@ -77,9 +69,7 @@ public class TestController {
         UserInfo userInfo = userInfoService.getById(2);
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         BeanUtils.copyProperties(userInfo, userInfoDTO);
-        userInfoDTO.setToken(jwtUtils.generateToken(userInfo));
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(authentication);
+        userInfoDTO.setToken(jwtUtils.generateToken(userInfoDTO));
         return R.ok(userInfoDTO);
     }
 
