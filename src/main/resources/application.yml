@@ -35,5 +35,5 @@ jwt:
   token-name: Authorization
   # JWT负载中拿到开头
   token-prefix: Bearer
-  # JWT的有效期（单位秒，60*60*24 1天）
-  expire: 86400
+  # JWT的有效期（单位秒，默认30天）
+  expire: 2592000
