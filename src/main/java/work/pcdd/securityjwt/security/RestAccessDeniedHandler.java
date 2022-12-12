@@ -26,14 +26,13 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) throws IOException, ServletException {
-        log.info("------------------当接口没有权限时，自定义返回结果");
-
+        log.info("当接口没有权限时，自定义返回结果");
         response.setContentType("application/json;charset=utf-8");
         // 设置状态码为403
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 
         PrintWriter out = response.getWriter();
-        out.write(new ObjectMapper().writeValueAsString(R.fail(403, "权限不足")));
+        out.write(new ObjectMapper().writeValueAsString(R.fail(403, e.getMessage())));
         out.flush();
         out.close();
     }
