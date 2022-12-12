@@ -30,20 +30,23 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
-    private MyUserDetailsServiceImpl userDetailsService;
-    @Autowired
     private JwtUtils jwtUtils;
     @Autowired
     private IUserInfoService userInfoService;
+    @Autowired
+    private MyUserDetailsServiceImpl userDetailsService;
+
     @Value("${jwt.auth-scheme}")
     private String authScheme;
+    @Value("${jwt.token-name}")
+    private String tokenName;
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse resp, FilterChain filterChain) throws ServletException, IOException {
         log.info("鉴权过滤器执行");
         log.info("请求的api地址:" + req.getRequestURI());
 
-        String s = req.getHeader("Authorization");
+        String s = req.getHeader(tokenName);
         // 巨坑，之前没写这一段，配置类的antMatchers一直失效；如果请求头中没有Authorization信息则直接放行了
         if (!StringUtils.hasText(s)) {
             log.warn("请求未携带token，无需校验");
@@ -55,7 +58,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // 处理空白字符
         String t = s.trim().replaceAll("\\s+", " ");
         String token = t.substring(t.indexOf(" ") + 1);
-        System.out.println("token = " + token);
         log.info("请求携带的token：{}", token);
         jwtUtils.verifyToken(token);
         log.info("token校验通过");
