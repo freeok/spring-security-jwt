@@ -63,6 +63,12 @@ public class TestController {
         return R.ok("这个接口只有匿名用户才能调用，已认证的用户反而无法调用");
     }
 
+    @PreAuthorize("hasAuthority('user.edit')")
+    @GetMapping("/fun7")
+    public R fun7() {
+        return R.ok("这个接口需要user.edit权限才能调用");
+    }
+
     /**
      * 内存用户申请token，拥有user角色
      */

@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -46,10 +45,10 @@ public class MyUserDetailsServiceImpl implements UserDetailsService {
         Assert.notNull(userInfo, "用户不存在");
         Assert.isTrue(userInfo.getStatus() != -1, "该账户被锁定");
         Assert.isTrue(userInfo.getStatus() != 0, "该账户被禁用");
-        log.info("开始授权");
+        log.info("开始授权（角色和权限）");
 
-        // 这里的User是Spring Security内置的类
-        return new User(
+        return new MyUser(
+                userInfo.getId(), userInfo.getEmail(),
                 userInfo.getUsername(),
                 passwordEncoder.encode(userInfo.getPassword()),
                 userInfo.getStatus() != 0,
@@ -57,8 +56,8 @@ public class MyUserDetailsServiceImpl implements UserDetailsService {
                 true,
                 userInfo.getStatus() != -1,
                 // 授权(设置角色和权限)在这里，字符串以逗号分隔
-                // 角色必须以 ROLE_ 开头！否则依然是403
-                AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_" + userInfo.getRole()));
+                // 角色必须以 ROLE_ 开头！否则默认是权限
+                AuthorityUtils.commaSeparatedStringToAuthorityList(userInfo.getRole()));
     }
 
 }
