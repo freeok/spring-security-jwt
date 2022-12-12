@@ -2,12 +2,15 @@ package work.pcdd.securityjwt.common.util;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author pcdd
  * @date 2021/3/24
  */
+//@JsonInclude(JsonInclude.Include.NON_NULL) // 解决Filter中null仍显示
 @Data
-public class R {
+public class R implements Serializable {
 
     private Integer code;
     private String msg;

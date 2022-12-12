@@ -77,8 +77,10 @@ public class MyErrorController extends BasicErrorController {
     @SneakyThrows
     @Override
     public ModelAndView errorHtml(HttpServletRequest request, HttpServletResponse response) {
+        // return super.errorHtml(request, response);
         response.setContentType("application/json;charset=utf-8");
         response.setStatus(HttpStatus.NOT_FOUND.value());
+        // 即使设置了default-property-inclusion: non_null，此处data字段为null时仍会显示
         response.getWriter()
                 .write(new ObjectMapper().writeValueAsString(
                         R.fail(404, "请求的资源不存在")));
