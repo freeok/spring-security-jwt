@@ -1,13 +1,14 @@
 package work.pcdd.securityjwt.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import work.pcdd.securityjwt.security.JwtAuthenticationFilter;
 import work.pcdd.securityjwt.security.MyUserDetailsServiceImpl;
@@ -18,30 +19,22 @@ import work.pcdd.securityjwt.security.RestAuthorizationEntryPoint;
  * 从Spring Boot 2.7.0（Spring Security 5.7.1）开始，WebSecurityConfigurerAdapter 已弃用
  *
  * @author pcdd
- * @date 2021/3/26
+ * @date 2022/12/12
  */
-@Deprecated
-//@Configuration
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-    @Autowired
-    private MyUserDetailsServiceImpl userDetailsService;
-    /**
-     * 当未登录或token失效时访问接口时，自定义的返回结果（401）
-     */
-    @Autowired
-    private RestAuthorizationEntryPoint restAuthorizationEntryPoint;
-    /**
-     * 当没有权限访问接口时，自定义的返回结果（403）
-     */
-    @Autowired
-    private RestAccessDeniedHandler restAccessDeniedHandler;
+@Configuration
+public class SecurityLatestConfig {
 
     /**
      * HttpSecurity 主要是权限控制规则
+     *
+     * @param restAccessDeniedHandler     当未登录或token失效时访问接口时，自定义的返回结果（401）
+     * @param restAuthorizationEntryPoint 当没有权限访问接口时，自定义的返回结果（403）
      */
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http
+            , RestAuthorizationEntryPoint restAuthorizationEntryPoint
+            , RestAccessDeniedHandler restAccessDeniedHandler) throws Exception {
+
         // 重写后Please sign in界面消失
         http.csrf().disable()
                 // 基于token，不需要session
@@ -61,25 +54,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 忽略规则
                 .antMatchers("/css/**", "/js/**", "favicon.ico")
                 .permitAll();
+
+        return http.build();
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+    /**
+     * 配置自定义UserDetailsService
+     */
+    @Bean
+    public AuthenticationManager authenticationManager(HttpSecurity httpSecurity, MyUserDetailsServiceImpl userDetailsService) throws Exception {
+        return httpSecurity.getSharedObject(AuthenticationManagerBuilder.class)
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder())
+                .and()
+                .build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        // 使用的密码比较方式，单参构造为加密强度(4-31)，默认10
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
         return new JwtAuthenticationFilter();
-    }
-
-    /**
-     * 此处循环依赖了
-     */
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        // 使用的密码比较方式，单参构造为加密强度(4-31)，默认10
-        return new BCryptPasswordEncoder();
     }
 
 }
