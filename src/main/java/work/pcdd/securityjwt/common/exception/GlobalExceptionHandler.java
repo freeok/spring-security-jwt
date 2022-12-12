@@ -59,4 +59,10 @@ public class GlobalExceptionHandler {
         return R.fail(400, e.getMessage());
     }
 
+    @ExceptionHandler
+    public R handler(Exception e) {
+        log.error(e.getMessage(), e);
+        return R.fail(500, "异常信息：" + e.getMessage());
+    }
+
 }
