@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import work.pcdd.securityjwt.common.util.JwtUtils;
 import work.pcdd.securityjwt.common.util.R;
 import work.pcdd.securityjwt.model.dto.LoginDTO;
@@ -26,9 +23,9 @@ import work.pcdd.securityjwt.service.IUserInfoService;
 public class AuthController {
 
     @Autowired
-    IUserInfoService userInfoService;
+    private JwtUtils jwtUtils;
     @Autowired
-    JwtUtils jwtUtils;
+    private IUserInfoService userInfoService;
 
     /**
      * 登录
@@ -39,14 +36,14 @@ public class AuthController {
     }
 
     /**
-     * 免密获取token，模拟用户id为2的用户
+     * 免密获取token，模拟id为2的用户
      */
     @GetMapping("/token")
-    public R token() {
+    public R token(@RequestParam Long timeout) {
         UserInfo userInfo = userInfoService.getById(2);
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         BeanUtils.copyProperties(userInfo, userInfoDTO);
-        userInfoDTO.setToken(jwtUtils.generateToken(userInfoDTO));
+        userInfoDTO.setToken(jwtUtils.generateToken(userInfoDTO, timeout));
         return R.ok(userInfoDTO);
     }
 
@@ -63,8 +60,8 @@ public class AuthController {
      * 获取当前用户的认证信息
      */
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/authenticated")
-    public R fun1() {
+    @GetMapping("/authentication")
+    public R getAuthentication() {
         return R.ok("当前正在访问系统的用户的详细信息", SecurityContextHolder.getContext().getAuthentication());
     }
 
