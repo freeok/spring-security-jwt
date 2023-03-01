@@ -46,13 +46,12 @@ public class CustomErrorController extends BasicErrorController {
     @Override
     public ResponseEntity<Map<String, Object>> error(HttpServletRequest request) {
         HttpStatus httpStatus = this.getStatus(request);
-        Object ex = request.getAttribute("javax.servlet.error.exception");
+        Object ex = request.getAttribute("jakarta.servlet.error.exception");
 
         // 有序
-        Map<String, Object> map = new LinkedHashMap<>(3);
-        // 表示Filter中发生异常，无法被全局异常捕获
+        Map<String, Object> map = new LinkedHashMap<>(2);
+        // -1 表示 Filter 中发生异常，无法被全局异常捕获
         map.put("code", -1);
-        map.put("msg", "Filter异常：" + httpStatus);
 
         if (ex instanceof Exception e) {
             // JWT校验异常，此处使用了JDK16特性：instanceof增强
@@ -63,7 +62,7 @@ public class CustomErrorController extends BasicErrorController {
             if (ex instanceof IllegalArgumentException) {
                 httpStatus = HttpStatus.BAD_REQUEST;
             }
-            map.put("data", e.getMessage());
+            map.put("msg", e.getMessage());
         } else {
             Map<String, Object> originalMsgMap = this.getErrorAttributes(request, this.getErrorAttributeOptions(request, MediaType.ALL));
             map.put("data", originalMsgMap);
