@@ -29,22 +29,22 @@ public class TestController {
         return R.ok("admin接口调用成功！");
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAuthority('user.view')")
     @GetMapping("/f4")
+    public R hasAuthority() {
+        return R.ok("这个接口需要 user.view 权限才能访问");
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/f5")
     public R isAuthenticated() {
         return R.ok("只要认证（登录），此接口就会调用成功");
     }
 
     @PreAuthorize("isAnonymous()")
-    @GetMapping("/f5")
+    @GetMapping("/f6")
     public R isAnonymous() {
         return R.ok("这个接口只有匿名用户才能访问，已认证的用户反而无法访问");
-    }
-
-    @PreAuthorize("hasAuthority('user.edit')")
-    @GetMapping("/f6")
-    public R hasAuthority() {
-        return R.ok("这个接口需要 user.edit 权限才能访问");
     }
 
 }
