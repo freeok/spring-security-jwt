@@ -21,7 +21,7 @@ import work.pcdd.securityjwt.service.IUserInfoService;
  */
 @Slf4j
 @Service
-public class CustomUserDetailsServiceImpl implements UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
     private IUserInfoService userInfoService;

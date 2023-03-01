@@ -10,7 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import work.pcdd.securityjwt.security.CustomAccessDeniedHandler;
 import work.pcdd.securityjwt.security.CustomAuthorizationEntryPoint;
-import work.pcdd.securityjwt.security.CustomUserDetailsServiceImpl;
+import work.pcdd.securityjwt.security.CustomUserDetailsService;
 import work.pcdd.securityjwt.security.JwtAuthenticationFilter;
 
 /**
@@ -24,7 +24,7 @@ import work.pcdd.securityjwt.security.JwtAuthenticationFilter;
 // @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private CustomUserDetailsServiceImpl userDetailsService;
+    private CustomUserDetailsService userDetailsService;
     /**
      * 当未登录或token失效时访问接口时，自定义的返回结果（401）
      */
