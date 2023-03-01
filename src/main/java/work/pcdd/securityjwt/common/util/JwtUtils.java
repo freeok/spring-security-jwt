@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.*;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Component;
 import work.pcdd.securityjwt.model.dto.TokenInfo;
 import work.pcdd.securityjwt.model.dto.UserInfoDTO;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.Date;
 
@@ -54,9 +54,9 @@ public class JwtUtils {
                     // 签名过期的时间
                     .withExpiresAt(expireDate)
                     // 携带自定义信息
-                    //.withClaim("role", userInfoDTO.getRole())
-                    //.withClaim("tokenName", tokenName)
-                    //.withClaim("tokenPrefix", tokenPrefix)
+                    .withClaim("role", userInfoDTO.getRole())
+                    .withClaim("tokenName", tokenName)
+                    .withClaim("tokenPrefix", tokenPrefix)
                     // 使用HMAC256加密算法构建密钥信息,密钥是secret
                     .sign(Algorithm.HMAC256(secret));
 
@@ -104,20 +104,21 @@ public class JwtUtils {
         return getTokenInfo(request.getHeader(tokenName));
     }
 
-    public TokenInfo getTokenInfo(String s) {
-        if (s == null) {
+    public TokenInfo getTokenInfo(String token) {
+        if (token == null) {
             return null;
         }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
-        String token = s.substring(s.indexOf(" ") + 1);
-        DecodedJWT jwt = JWT.decode(token);
+        String tokenValue = token.substring(token.indexOf(" ") + 1);
+        DecodedJWT jwt = JWT.decode(tokenValue);
         TokenInfo tokenInfo = new TokenInfo();
         tokenInfo.setTokenName(jwt.getClaim("tokenName").asString());
         tokenInfo.setTokenPrefix(jwt.getClaim("tokenPrefix").asString());
-        tokenInfo.setTokenValue(token);
+        tokenInfo.setTokenValue(tokenValue);
         tokenInfo.setLoginId(Long.valueOf(jwt.getAudience().get(0)));
+        // 从此处获取的用户角色权限一定是最新的，因为是从数据库中查询，而jwt中存储的不一定是最新的
         tokenInfo.setAuthorities(authorities);
         tokenInfo.setTokenTimeout((jwt.getExpiresAt().getTime() - System.currentTimeMillis()) / 1000);
 
