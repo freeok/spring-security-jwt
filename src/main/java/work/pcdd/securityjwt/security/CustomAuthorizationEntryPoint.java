@@ -2,6 +2,7 @@ package work.pcdd.securityjwt.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -20,16 +21,16 @@ import java.io.PrintWriter;
  */
 @Slf4j
 @Component
-public class RestAuthorizationEntryPoint implements AuthenticationEntryPoint {
+public class CustomAuthorizationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException {
-        log.info("当未登录或token失效时访问接口时，自定义的返回结果");
+        log.error("当未登录或token失效时访问接口时，自定义的返回结果", e);
         response.setContentType("application/json;charset=utf-8");
-        // 设置状态码为401
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        PrintWriter out = response.getWriter();
+        // 设置http状态码为401
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
 
+        PrintWriter out = response.getWriter();
         out.write(new ObjectMapper().writeValueAsString(R.fail(401, e.getMessage())));
         out.flush();
         out.close();

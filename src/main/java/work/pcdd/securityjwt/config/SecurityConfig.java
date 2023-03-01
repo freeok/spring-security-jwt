@@ -1,6 +1,5 @@
 package work.pcdd.securityjwt.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -9,10 +8,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import work.pcdd.securityjwt.security.CustomAccessDeniedHandler;
+import work.pcdd.securityjwt.security.CustomAuthorizationEntryPoint;
+import work.pcdd.securityjwt.security.CustomUserDetailsServiceImpl;
 import work.pcdd.securityjwt.security.JwtAuthenticationFilter;
-import work.pcdd.securityjwt.security.MyUserDetailsServiceImpl;
-import work.pcdd.securityjwt.security.RestAccessDeniedHandler;
-import work.pcdd.securityjwt.security.RestAuthorizationEntryPoint;
 
 /**
  * 从Spring Boot 2.7.0（Spring Security 5.7.1）开始，WebSecurityConfigurerAdapter 已弃用
@@ -21,21 +20,19 @@ import work.pcdd.securityjwt.security.RestAuthorizationEntryPoint;
  * @date 2021/3/26
  */
 @Deprecated
-//@Configuration
+// @Configuration
+// @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private MyUserDetailsServiceImpl userDetailsService;
+    private CustomUserDetailsServiceImpl userDetailsService;
     /**
      * 当未登录或token失效时访问接口时，自定义的返回结果（401）
      */
-    @Autowired
-    private RestAuthorizationEntryPoint restAuthorizationEntryPoint;
+    private CustomAuthorizationEntryPoint customAuthorizationEntryPoint;
     /**
      * 当没有权限访问接口时，自定义的返回结果（403）
      */
-    @Autowired
-    private RestAccessDeniedHandler restAccessDeniedHandler;
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
 
     /**
      * HttpSecurity 主要是权限控制规则
@@ -53,9 +50,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.exceptionHandling()
                 // restAuthorizationEntryPoint 用来解决匿名用户访问无权限资源时的异常
-                .authenticationEntryPoint(restAuthorizationEntryPoint)
+                .authenticationEntryPoint(customAuthorizationEntryPoint)
                 // restfulAccessDeniedHandler 用来解决认证过的用户访问无权限资源时的异常
-                .accessDeniedHandler(restAccessDeniedHandler);
+                .accessDeniedHandler(customAccessDeniedHandler);
 
         http.authorizeHttpRequests()
                 // 忽略规则

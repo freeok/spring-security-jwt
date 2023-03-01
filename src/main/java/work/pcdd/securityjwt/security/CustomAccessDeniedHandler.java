@@ -2,6 +2,7 @@ package work.pcdd.securityjwt.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
@@ -22,14 +23,14 @@ import java.io.PrintWriter;
  */
 @Slf4j
 @Component
-public class RestAccessDeniedHandler implements AccessDeniedHandler {
+public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) throws IOException, ServletException {
-        log.info("当接口没有权限时，自定义返回结果");
+        log.error("当接口没有权限时，自定义返回结果", e);
         response.setContentType("application/json;charset=utf-8");
-        // 设置状态码为403
-        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        // 设置http状态码为403
+        response.setStatus(HttpStatus.FORBIDDEN.value());
 
         PrintWriter out = response.getWriter();
         out.write(new ObjectMapper().writeValueAsString(R.fail(403, e.getMessage())));

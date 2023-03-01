@@ -14,40 +14,34 @@ import work.pcdd.securityjwt.model.entity.UserInfo;
 import work.pcdd.securityjwt.service.IUserInfoService;
 
 /**
- * 很关键的一个类，授权就在这里
+ * 授权
  *
  * @author pcdd
  * @date 2021/3/27
  */
 @Slf4j
 @Service
-public class MyUserDetailsServiceImpl implements UserDetailsService {
+public class CustomUserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     private IUserInfoService userInfoService;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    /**
-     * 根据用户名获取用户角色、权限等信息，非常重要的一个类，授权就在这
-     *
-     * @param username 用户名
-     * @return 用户详情
-     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.info("开始执行loadUserByUsername方法");
+        log.info("开始执行 loadUserByUsername 方法");
 
         UserInfo userInfo = userInfoService.getOne(new QueryWrapper<UserInfo>()
                 .eq("username", username));
-        log.info("userInfo:{}", userInfo);
 
+        log.info("userInfo:{}", userInfo);
         Assert.notNull(userInfo, "用户不存在");
         Assert.isTrue(userInfo.getStatus() != -1, "该账户被锁定");
         Assert.isTrue(userInfo.getStatus() != 0, "该账户被禁用");
-        log.info("开始授权（角色和权限）");
 
-        return new MyUser(
+        log.info("开始授权（角色和权限）");
+        return new CustomUser(
                 userInfo.getId(), userInfo.getEmail(),
                 userInfo.getUsername(),
                 passwordEncoder.encode(userInfo.getPassword()),
