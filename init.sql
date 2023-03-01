@@ -46,15 +46,15 @@ CREATE TABLE `user_info`
 -- ----------------------------
 INSERT INTO `user_info`
 VALUES (1, 'pcdd', '1', 'foo@qq.com',
-        'https://img0.baidu.com/it/u=1942253063,3807598283&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500', 1,
+        'https://img0.baidu.com/it/u=1942253063,3807598283&fm=253', 1,
         'ROLE_admin,ROLE_sa,user.edit', '2021-02-27 22:59:28');
 INSERT INTO `user_info`
 VALUES (2, 'zhangsan', '1', 'bar@qq.com',
-        'https://img2.baidu.com/it/u=4244269751,4000533845&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500', 1, 'ROLE_user',
+        'https://img2.baidu.com/it/u=4244269751,4000533845&fm=253', 1, 'ROLE_user,user.view',
         '2018-09-06 22:59:43');
 INSERT INTO `user_info`
 VALUES (3, 'Anya', '1', 'aka@qq.com',
-        'https://img0.baidu.com/it/u=869010084,3883818022&fm=253&fmt=auto&app=120&f=JPEG?w=500&h=500', 0, 'ROLE_user',
+        'https://img0.baidu.com/it/u=869010084,3883818022&fm=253', 0, 'ROLE_user',
         '2021-04-03 22:59:56');
 
 SET FOREIGN_KEY_CHECKS = 1;
