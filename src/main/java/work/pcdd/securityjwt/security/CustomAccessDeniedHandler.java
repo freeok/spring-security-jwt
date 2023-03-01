@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * 当接口没有权限时，自定义返回结果
+ * 访问没有权限的接口时，自定义返回结果
  * 其实这个类可以不用写，通过捕获AccessDeniedException异常即可，若两者都写了，则优先捕获全局异常
  *
  * @author pcdd
@@ -27,7 +27,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) throws IOException, ServletException {
-        log.error("当接口没有权限时，自定义返回结果", e);
+        log.error("访问没有权限的接口时，自定义返回结果", e);
         response.setContentType("application/json;charset=utf-8");
         // 设置http状态码为403
         response.setStatus(HttpStatus.FORBIDDEN.value());

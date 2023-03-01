@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * 当未登录或token失效时访问接口时，自定义的返回结果
+ * 访问需要登录的接口，未携带token时，自定义的返回结果
  *
  * @author pcdd
  * @date 2021/3/24
@@ -25,7 +25,7 @@ public class CustomAuthorizationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException {
-        log.error("当未登录或token失效时访问接口时，自定义的返回结果", e);
+        log.error("访问需要登录的接口，未携带token时，自定义的返回结果", e);
         response.setContentType("application/json;charset=utf-8");
         // 设置http状态码为401
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
