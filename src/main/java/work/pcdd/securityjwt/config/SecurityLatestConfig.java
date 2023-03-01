@@ -13,7 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import work.pcdd.securityjwt.security.CustomAccessDeniedHandler;
 import work.pcdd.securityjwt.security.CustomAuthorizationEntryPoint;
-import work.pcdd.securityjwt.security.CustomUserDetailsServiceImpl;
+import work.pcdd.securityjwt.security.CustomUserDetailsService;
 import work.pcdd.securityjwt.security.JwtAuthenticationFilter;
 
 /**
@@ -66,7 +66,7 @@ public class SecurityLatestConfig {
      * 配置自定义UserDetailsService
      */
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity httpSecurity, CustomUserDetailsServiceImpl userDetailsService) throws Exception {
+    public AuthenticationManager authenticationManager(HttpSecurity httpSecurity, CustomUserDetailsService userDetailsService) throws Exception {
         return httpSecurity.getSharedObject(AuthenticationManagerBuilder.class)
                 .userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder())

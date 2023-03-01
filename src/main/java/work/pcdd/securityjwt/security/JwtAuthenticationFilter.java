@@ -34,7 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private IUserInfoService userInfoService;
     @Autowired
-    private CustomUserDetailsServiceImpl customUserDetailsService;
+    private CustomUserDetailsService customUserDetailsService;
 
     @Value("${jwt.token-prefix}")
     private String tokenPrefix;
