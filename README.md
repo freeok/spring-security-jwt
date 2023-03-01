@@ -1,12 +1,12 @@
-### Spring Boot + Spring Security + JWT(auth0) 整合代码示例（仅适用于前后端分离）
+### Spring Boot 3 + Spring Security + JWT(auth0) 整合代码示例（仅适用于前后端分离）
 
 ### 核心依赖
 
 | 依赖                  | 版本      |
 |---------------------|---------|
 | JDK                 | 17      |
-| Spring Boot         | 2.7.6   |
-| Spring Security     | 5.7.5   |
+| Spring Boot         | 3.0.3   |
+| Spring Security     | 6.0.2   |
 | java-jwt(com.auth0) | 4.3.0   |
 | MySQL               | 8       |
 | MyBatis-Plus        | 3.5.3.1 |

@@ -2,6 +2,10 @@ package work.pcdd.securityjwt.security;
 
 import com.auth0.jwt.JWT;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,10 +20,6 @@ import work.pcdd.securityjwt.common.util.JwtUtils;
 import work.pcdd.securityjwt.model.entity.UserInfo;
 import work.pcdd.securityjwt.service.IUserInfoService;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -70,19 +70,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             log.info("UserDetails:" + userDetails);
             log.info("Authorities:" + userDetails.getAuthorities());
 
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken
+            // 表示当前访问系统的用户，封装了principal(CustomUser)、credentials、authorities(角色和权限)
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken
                     (userDetails, null, userDetails.getAuthorities());
 
-            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
+            // 将 request.getRemoteAddr() 保存到authentication的details属性中
+            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
 
-            // 注释掉这句就会触发CustomAuthorizationEntryPoint(401)
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            // 参数为null时，访问需要鉴权的API会触发 InsufficientAuthenticationException（401）
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
         } else {
             log.info("请求未携带token");
         }
 
-        // 若直接执行这条语句，就会执行自定义未登录的返回结果（CustomAuthorizationEntryPoint）
         filterChain.doFilter(req, resp);
     }
 
