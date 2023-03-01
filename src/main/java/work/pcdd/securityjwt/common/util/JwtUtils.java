@@ -44,21 +44,23 @@ public class JwtUtils {
         Date expireDate = new Date(nowDate.getTime() + expire * 1000);
 
         try {
-            return tokenPrefix + " " + JWT.create()
+            String tokenValue = JWT.create()
                     // 签名由谁生成(可选)
                     .withIssuer("auth0")
                     // 生成签名的时间(可选)
                     .withIssuedAt(nowDate)
-                    // 签名的观众 也可以理解谁接受签名的
+                    // jwt的id，此处为用户id
                     .withAudience(String.valueOf(userInfoDTO.getId()))
                     // 签名过期的时间
                     .withExpiresAt(expireDate)
-                    // 生成携带自定义信息 这里为角色权限
-                    .withClaim("role", userInfoDTO.getRole())
-                    .withClaim("tokenName", tokenName)
-                    .withClaim("tokenPrefix", tokenPrefix)
+                    // 携带自定义信息
+                    //.withClaim("role", userInfoDTO.getRole())
+                    //.withClaim("tokenName", tokenName)
+                    //.withClaim("tokenPrefix", tokenPrefix)
                     // 使用HMAC256加密算法构建密钥信息,密钥是secret
                     .sign(Algorithm.HMAC256(secret));
+
+            return tokenPrefix + " " + tokenValue;
 
         } catch (JWTCreationException e) {
             throw new JWTCreationException("无效的签名配置", e);
@@ -71,12 +73,10 @@ public class JwtUtils {
      * @param token 令牌
      */
     public void verifyToken(String token) {
-        log.info("开始校验token");
         try {
             // 从解密的token中获取userId
             String userId = JWT.decode(token).getAudience().get(0);
-            DecodedJWT jwt = JWT.decode(token);
-            log.info("userId:{} 角色：{}", userId, jwt.getClaim("role"));
+            log.info("jwt中的userId:{}", userId);
 
             // 验证上传的token私钥部分是否与密匙一致
             JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(secret)).build();

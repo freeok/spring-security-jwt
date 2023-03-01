@@ -34,9 +34,9 @@ import java.util.Map;
  */
 @Slf4j
 @Component
-public class MyErrorController extends BasicErrorController {
+public class CustomErrorController extends BasicErrorController {
 
-    public MyErrorController(ServerProperties serverProperties) {
+    public CustomErrorController(ServerProperties serverProperties) {
         super(new DefaultErrorAttributes(), serverProperties.getError());
     }
 
@@ -50,8 +50,9 @@ public class MyErrorController extends BasicErrorController {
 
         // 有序
         Map<String, Object> map = new LinkedHashMap<>(3);
-        // 999表示Filter中发生异常，无法被全局异常捕获
-        map.put("code", 999);
+        // 表示Filter中发生异常，无法被全局异常捕获
+        map.put("code", -1);
+        map.put("msg", "Filter异常：" + httpStatus);
 
         if (ex instanceof Exception e) {
             // JWT校验异常，此处使用了JDK16特性：instanceof增强
@@ -67,7 +68,6 @@ public class MyErrorController extends BasicErrorController {
             Map<String, Object> originalMsgMap = this.getErrorAttributes(request, this.getErrorAttributeOptions(request, MediaType.ALL));
             map.put("data", originalMsgMap);
         }
-        map.put("msg", "Filter异常：" + httpStatus);
 
         log.error("Filter异常：{}", httpStatus);
 
