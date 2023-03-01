@@ -19,6 +19,8 @@ import java.util.List;
  * ResponseStatus注解就是为了改变HTTP响应的状态码
  * 如果不使用@ResponseStatus，在处理方法正确执行的前提下，后台返回HTTP响应的状态码为200
  * 其实就是调用了response.setStatus方法
+ * <p>
+ * 不要捕获Exception异常，会使Spring Security自定义异常失效！
  *
  * @author pcdd
  * @date 2021/2/23
@@ -28,15 +30,13 @@ import java.util.List;
 public class GlobalExceptionHandler {
 
     /**
-     * 捕获实体校验异常
+     * 捕获JWT校验异常
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public R handler(MethodArgumentNotValidException e) {
-        List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
-        String msg = fieldErrors.get(0).getDefaultMessage();
-        log.error("实体校验异常：{}", msg);
-        return R.fail(400, msg);
+    @ExceptionHandler(JWTVerificationException.class)
+    public R handler(JWTVerificationException e) {
+        log.error("JWT校验异常：", e);
+        return R.fail(400, e.getMessage());
     }
 
     /**
@@ -50,19 +50,15 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 捕获JWT校验异常
+     * 捕获实体校验异常
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(JWTVerificationException.class)
-    public R handler(JWTVerificationException e) {
-        log.error("JWT校验异常：", e);
-        return R.fail(400, e.getMessage());
-    }
-
-    @ExceptionHandler
-    public R handler(Exception e) {
-        log.error(e.getMessage(), e);
-        return R.fail(500, "异常信息：" + e.getMessage());
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public R handler(MethodArgumentNotValidException e) {
+        List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
+        String msg = fieldErrors.get(0).getDefaultMessage();
+        log.error("实体校验异常：{}", msg);
+        return R.fail(400, msg);
     }
 
 }
