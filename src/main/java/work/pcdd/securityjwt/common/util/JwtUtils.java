@@ -35,13 +35,20 @@ public class JwtUtils {
     @Value("${jwt.token-name}")
     private String tokenName;
 
-    /**
-     * 根据用户id，role 生成token
-     */
     public String generateToken(UserInfoDTO userInfoDTO) {
+        return generateToken(userInfoDTO, expire);
+    }
+
+    /**
+     * 生成token
+     *
+     * @param userInfoDTO 用户信息
+     * @param timeout     token有效期，单位秒
+     */
+    public String generateToken(UserInfoDTO userInfoDTO, Long timeout) {
         log.info("开始生成token");
         Date nowDate = new Date();
-        Date expireDate = new Date(nowDate.getTime() + expire * 1000);
+        Date expireDate = new Date(nowDate.getTime() + timeout * 1000);
 
         try {
             String tokenValue = JWT.create()
