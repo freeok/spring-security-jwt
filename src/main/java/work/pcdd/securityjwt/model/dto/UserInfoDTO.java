@@ -11,7 +11,6 @@ import java.io.Serializable;
 @Data
 public class UserInfoDTO implements Serializable {
 
-    private String token;
     private Long id;
     private String username;
     private String email;

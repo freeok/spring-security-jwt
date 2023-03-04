@@ -1,10 +1,8 @@
 package work.pcdd.securityjwt.model.dto;
 
 import lombok.Data;
-import org.springframework.security.core.GrantedAuthority;
 
 import java.io.Serializable;
-import java.util.Collection;
 
 /**
  * @author pcdd
@@ -21,7 +19,6 @@ public class TokenInfo implements Serializable {
      */
     private Long tokenTimeout;
     private Long loginId;
-    private Collection<? extends GrantedAuthority> authorities;
     private String loginDevice;
 
 }
