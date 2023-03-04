@@ -43,13 +43,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         log.info("开始授权（角色和权限）");
         return new CustomUser(
-                userInfo.getId(), userInfo.getEmail(),
-                userInfo.getUsername(),
-                passwordEncoder.encode(userInfo.getPassword()),
-                userInfo.getStatus() != 0,
-                true,
-                true,
-                userInfo.getStatus() != -1,
+                userInfo,
                 // 授权(设置角色和权限)在这里，字符串以逗号分隔
                 // 角色必须以 ROLE_ 开头！否则默认是权限
                 AuthorityUtils.commaSeparatedStringToAuthorityList(userInfo.getRole()));
