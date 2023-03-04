@@ -23,4 +23,6 @@ public interface IUserInfoService extends IService<UserInfo> {
      */
     R login(LoginDTO loginDto);
 
+    R checkToken();
+
 }

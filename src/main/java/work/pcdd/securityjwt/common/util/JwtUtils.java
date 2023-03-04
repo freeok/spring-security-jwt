@@ -8,14 +8,10 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import work.pcdd.securityjwt.model.dto.TokenInfo;
 import work.pcdd.securityjwt.model.dto.UserInfoDTO;
 
-import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -86,7 +82,10 @@ public class JwtUtils {
             log.info("jwt中的userId:{}", userId);
 
             // 验证上传的token私钥部分是否与密匙一致
-            JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(secret)).build();
+            JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(secret))
+                    // 指定一个具体的验证项
+                    .withIssuer("auth0")
+                    .build();
             jwtVerifier.verify(token);
 
         } catch (JWTDecodeException e) {
@@ -115,8 +114,6 @@ public class JwtUtils {
         if (token == null) {
             return null;
         }
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
         String tokenValue = token.substring(token.indexOf(" ") + 1);
         DecodedJWT jwt = JWT.decode(tokenValue);
@@ -125,8 +122,6 @@ public class JwtUtils {
         tokenInfo.setTokenPrefix(jwt.getClaim("tokenPrefix").asString());
         tokenInfo.setTokenValue(tokenValue);
         tokenInfo.setLoginId(Long.valueOf(jwt.getAudience().get(0)));
-        // 从此处获取的用户角色权限一定是最新的，因为是从数据库中查询，而jwt中存储的不一定是最新的
-        tokenInfo.setAuthorities(authorities);
         tokenInfo.setTokenTimeout((jwt.getExpiresAt().getTime() - System.currentTimeMillis()) / 1000);
 
         return tokenInfo;

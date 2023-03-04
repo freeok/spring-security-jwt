@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import work.pcdd.securityjwt.common.util.JwtUtils;
 import work.pcdd.securityjwt.common.util.R;
 import work.pcdd.securityjwt.model.dto.LoginDTO;
+import work.pcdd.securityjwt.model.dto.LoginSuccess;
 import work.pcdd.securityjwt.model.dto.UserInfoDTO;
 import work.pcdd.securityjwt.model.entity.UserInfo;
 import work.pcdd.securityjwt.service.IUserInfoService;
@@ -36,15 +37,29 @@ public class AuthController {
     }
 
     /**
-     * 免密获取token，模拟id为2的用户
+     * 检查token
+     */
+    @PostMapping("/check")
+    public R checkToken() {
+        return userInfoService.checkToken();
+    }
+
+    /**
+     * 测试用，免密获取token，模拟id为2的用户
      */
     @GetMapping("/token")
-    public R token(@RequestParam Long timeout) {
-        UserInfo userInfo = userInfoService.getById(2);
+    public R token(@RequestParam(required = false) Long timeout) {
+        UserInfo userInfo = userInfoService.getById(1);
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         BeanUtils.copyProperties(userInfo, userInfoDTO);
-        userInfoDTO.setToken(jwtUtils.generateToken(userInfoDTO, timeout));
-        return R.ok(userInfoDTO);
+
+        String token = jwtUtils.generateToken(userInfoDTO, timeout);
+
+        LoginSuccess loginSuccess = new LoginSuccess();
+        loginSuccess.setUserInfoDTO(userInfoDTO);
+        loginSuccess.setTokenInfo(jwtUtils.getTokenInfo(token));
+
+        return R.ok(loginSuccess);
     }
 
     /**
