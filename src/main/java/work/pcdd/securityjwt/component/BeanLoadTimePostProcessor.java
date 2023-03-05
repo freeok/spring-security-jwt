@@ -3,7 +3,6 @@ package work.pcdd.securityjwt.component;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.stereotype.Component;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -15,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 2023/03/05 01:27
  */
 @Slf4j
-@Component
+// @Component
 public class BeanLoadTimePostProcessor implements BeanPostProcessor {
 
     private final Map<String, Long> loadTimeMap = new ConcurrentHashMap<>();

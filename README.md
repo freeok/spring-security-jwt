@@ -5,7 +5,7 @@
 | 依赖                  | 版本      |
 |---------------------|---------|
 | JDK                 | 17      |
-| Spring Boot         | 3.0.3   |
+| Spring Boot         | 3.0.4   |
 | Spring Security     | 6.0.2   |
 | java-jwt(com.auth0) | 4.3.0   |
 | MySQL               | 8       |
@@ -24,6 +24,7 @@
 2. token放入header（key为Authorization，value为Bearer
    jwt字符串），然后调用 [TestController.java](src%2Fmain%2Fjava%2Fwork%2Fpcdd%2Fsecurityjwt%2Fcontroller%2FTestController.java)
    中的方法，观察结果
+3. 所有用户明文密码均为6个0
 
 #### 补充说明
 
