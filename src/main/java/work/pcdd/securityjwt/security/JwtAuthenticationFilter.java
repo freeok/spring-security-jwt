@@ -58,8 +58,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             // token合法性通过，开始校验有效性（根据userId断持有此token的用户的当前状态是否正常）
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(userId);
-            log.info("UserDetails:" + userDetails);
-            log.info("Authorities:" + userDetails.getAuthorities());
+            log.info("UserDetails: {}", userDetails);
 
             // 表示当前访问系统的用户，封装了principal(CustomUser)、credentials、authorities(角色和权限)
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken

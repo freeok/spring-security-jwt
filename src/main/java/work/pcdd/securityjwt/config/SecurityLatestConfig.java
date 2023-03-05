@@ -2,8 +2,8 @@ package work.pcdd.securityjwt.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -27,47 +27,46 @@ import work.pcdd.securityjwt.security.JwtAuthenticationFilter;
 @EnableMethodSecurity
 public class SecurityLatestConfig {
 
-    /**
-     * HttpSecurity 主要是权限控制规则
-     */
     @Bean
     public SecurityFilterChain securityFilterChain(
             HttpSecurity httpSecurity,
+            JwtAuthenticationFilter jwtAuthenticationFilter,
+            AuthenticationProvider authenticationProvider,
             CustomAuthorizationEntryPoint customAuthorizationEntryPoint,
             CustomAccessDeniedHandler customAccessDeniedHandler) throws Exception {
 
         return httpSecurity
-                // 关闭csrf过滤器，因jwt不存储在cookie（jwt要存储在localStorage中，否则仍有csrf风险）
-                .csrf().disable()
-                // 基于token，不需要session
-                .sessionManagement(o -> o.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                // 在 UsernamePasswordAuthenticationFilter 过滤器之前执行JWT认证过滤器
-                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(o -> {
-                    // 处理未认证异常
-                    o.authenticationEntryPoint(customAuthorizationEntryPoint);
-                    // 处理未授权异常
-                    o.accessDeniedHandler(customAccessDeniedHandler);
-                })
                 .authorizeHttpRequests(o -> {
                     // 对于静态资源需要通过 requestMatchers 配置访问权限，对于方法可通过注解或配置类来控制权限
                     o.requestMatchers("/image/**").anonymous();
                     // 不加这句，无法访问公开API
                     o.anyRequest().permitAll();
                 })
+                // 在 UsernamePasswordAuthenticationFilter 过滤器之前执行JWT认证过滤器
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .authenticationProvider(authenticationProvider)
+                .exceptionHandling(o -> {
+                    // 处理未认证异常
+                    o.authenticationEntryPoint(customAuthorizationEntryPoint);
+                    // 处理未授权异常
+                    o.accessDeniedHandler(customAccessDeniedHandler);
+                })
+                // 关闭csrf过滤器，因jwt不存储在cookie（jwt要存储在localStorage中，否则仍有csrf风险）
+                .csrf().disable()
+                // 基于token，不需要session
+                .sessionManagement(o -> o.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
     }
 
     /**
-     * 配置自定义UserDetailsService
+     * 配置自定义的 UserDetailsService 子类
      */
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity httpSecurity, CustomUserDetailsService userDetailsService) throws Exception {
-        return httpSecurity.getSharedObject(AuthenticationManagerBuilder.class)
-                .userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder())
-                .and()
-                .build();
+    public AuthenticationProvider authenticationProvider(CustomUserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsService);
+        authenticationProvider.setPasswordEncoder(passwordEncoder);
+        return authenticationProvider;
     }
 
     @Bean

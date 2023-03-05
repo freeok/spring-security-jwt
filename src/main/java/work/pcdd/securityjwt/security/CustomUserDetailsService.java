@@ -34,7 +34,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .eq(UserInfo::getId, userId));
 
         Assert.notNull(userInfo, "用户不存在");
-        log.info("userInfo:{}", userInfo);
+        log.info("userInfo: {}", userInfo);
 
         log.info("开始授权（角色和权限）");
         return new CustomUser(userInfo,
