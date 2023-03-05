@@ -39,7 +39,8 @@ public class AuthController {
     /**
      * 检查token
      */
-    @PostMapping("/check")
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/check")
     public R checkToken() {
         return userInfoService.checkToken();
     }
@@ -53,7 +54,8 @@ public class AuthController {
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         BeanUtils.copyProperties(userInfo, userInfoDTO);
 
-        String token = jwtUtils.generateToken(userInfoDTO, timeout);
+        LoginDTO loginDTO = new LoginDTO(null, null, "username");
+        String token = jwtUtils.generateToken(userInfoDTO, loginDTO, timeout);
 
         LoginSuccess loginSuccess = new LoginSuccess();
         loginSuccess.setUserInfoDTO(userInfoDTO);
