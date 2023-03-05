@@ -21,7 +21,7 @@ import work.pcdd.securityjwt.service.IUserInfoService;
  */
 @Slf4j
 @RestController
-public class AuthController {
+public class AuthenticationController {
 
     @Autowired
     private JwtUtils jwtUtils;
