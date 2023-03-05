@@ -31,22 +31,15 @@ public class UserInfo implements Serializable {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
-
     private String username;
-
     private String password;
-
+    private String email;
+    private String avatar;
     private Integer status;
-
-    private String role;
-
+    private String permissions;
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime created;
-
-    private String email;
-
-    private String avatar;
 
 }

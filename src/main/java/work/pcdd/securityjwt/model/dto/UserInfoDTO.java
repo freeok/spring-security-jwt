@@ -15,6 +15,6 @@ public class UserInfoDTO implements Serializable {
     private String username;
     private String email;
     private String avatar;
-    private String role;
+    private String permissions;
 
 }

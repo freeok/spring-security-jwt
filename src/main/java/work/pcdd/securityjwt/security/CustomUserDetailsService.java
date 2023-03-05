@@ -1,6 +1,6 @@
 package work.pcdd.securityjwt.security;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -33,8 +33,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         log.info("开始执行 loadUserByUsername 方法");
 
         // 性能优化：从缓存中查询
-        UserInfo userInfo = userInfoService.getOne(new QueryWrapper<UserInfo>()
-                .eq("username", username));
+        UserInfo userInfo = userInfoService.getOne(new LambdaQueryWrapper<UserInfo>()
+                .eq(UserInfo::getUsername, username));
 
         log.info("userInfo:{}", userInfo);
         Assert.notNull(userInfo, "用户不存在");
@@ -46,7 +46,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 userInfo,
                 // 授权(设置角色和权限)在这里，字符串以逗号分隔
                 // 角色必须以 ROLE_ 开头！否则默认是权限
-                AuthorityUtils.commaSeparatedStringToAuthorityList(userInfo.getRole()));
+                AuthorityUtils.commaSeparatedStringToAuthorityList(userInfo.getPermissions()));
     }
 
 }
