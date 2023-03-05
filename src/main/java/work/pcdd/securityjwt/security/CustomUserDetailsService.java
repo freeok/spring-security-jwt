@@ -7,7 +7,6 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import work.pcdd.securityjwt.model.entity.UserInfo;
@@ -25,8 +24,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
     private IUserInfoService userInfoService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -42,8 +39,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         Assert.isTrue(userInfo.getStatus() != 0, "账户被禁用");
 
         log.info("开始授权（角色和权限）");
-        return new CustomUser(
-                userInfo,
+        return new CustomUser(userInfo,
                 // 授权(设置角色和权限)在这里，字符串以逗号分隔
                 // 角色必须以 ROLE_ 开头！否则默认是权限
                 AuthorityUtils.commaSeparatedStringToAuthorityList(userInfo.getPermissions()));
