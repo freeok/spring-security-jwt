@@ -1,60 +1,38 @@
-/*
- Navicat Premium Data Transfer
-
- Source Server         : localhost
- Source Server Type    : MySQL
- Source Server Version : 80025
- Source Host           : localhost:3306
- Source Schema         : security_jwt
-
- Target Server Type    : MySQL
- Target Server Version : 80025
- File Encoding         : 65001
-
- Date: 13/12/2022 00:16:56
-*/
-
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
-CREATE DATABASE IF NOT EXISTS security_jwt;
-USE security_jwt;
+CREATE DATABASE IF NOT EXISTS spring_security_jwt;
+USE spring_security_jwt;
 
 -- ----------------------------
 -- Table structure for user_info
 -- ----------------------------
-DROP TABLE IF EXISTS `user_info`;
-CREATE TABLE `user_info`
+create table user_info
 (
-    `id`       bigint UNSIGNED                                         NOT NULL AUTO_INCREMENT,
-    `username` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci  NOT NULL,
-    `password` varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci  NOT NULL,
-    `email`    varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci  NULL     DEFAULT NULL,
-    `avatar`   varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL     DEFAULT NULL,
-    `status`   tinyint                                                 NULL     DEFAULT 1,
-    `role`     varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'user',
-    `created`  datetime                                                NULL     DEFAULT NULL,
-    PRIMARY KEY (`id`) USING BTREE
+    id          bigint unsigned auto_increment
+        primary key,
+    username    varchar(255)                     not null,
+    password    varchar(255)                     not null,
+    email       varchar(255)                     null,
+    avatar      varchar(255)                     null,
+    status      tinyint      default 1           null,
+    permissions varchar(255) default 'ROLE_user' not null,
+    created     datetime                         null
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 21
-  CHARACTER SET = utf8
-  COLLATE = utf8_general_ci
-  ROW_FORMAT = DYNAMIC;
+  CHARACTER SET = utf8;
 
 -- ----------------------------
 -- Records of user_info
 -- ----------------------------
-INSERT INTO `user_info`
-VALUES (1, 'pcdd', '1', 'foo@qq.com',
-        'https://img0.baidu.com/it/u=1942253063,3807598283&fm=253', 1,
-        'ROLE_admin,ROLE_sa,user.edit', '2021-02-27 22:59:28');
-INSERT INTO `user_info`
-VALUES (2, 'zhangsan', '1', 'bar@qq.com',
-        'https://img2.baidu.com/it/u=4244269751,4000533845&fm=253', 1, 'ROLE_user,user.view',
-        '2018-09-06 22:59:43');
-INSERT INTO `user_info`
-VALUES (3, 'Anya', '1', 'aka@qq.com',
-        'https://img0.baidu.com/it/u=869010084,3883818022&fm=253', 0, 'ROLE_user',
-        '2021-04-03 22:59:56');
+INSERT INTO spring_security_jwt.user_info (id, username, password, email, avatar, status, permissions, created)
+VALUES (1, 'pcdd', '$2a$10$K9X9H9SSI7Ap6cEtTXY55ewGTHs2IRj7APlbtaxJo.BLzdqMg2TQ2', 'foo@qq.com',
+        'https://img0.baidu.com/it/u=1942253063,3807598283&fm=253', 1, 'ROLE_admin,ROLE_sa,user.edit',
+        '2021-02-27 22:59:28');
+INSERT INTO spring_security_jwt.user_info (id, username, password, email, avatar, status, permissions, created)
+VALUES (2, 'Josh Bloch', '$2a$10$K9X9H9SSI7Ap6cEtTXY55ewGTHs2IRj7APlbtaxJo.BLzdqMg2TQ2', 'bar@qq.com',
+        'https://img2.baidu.com/it/u=4244269751,4000533845&fm=253', 1, 'ROLE_user,user.view', '2018-09-06 22:59:43');
+INSERT INTO spring_security_jwt.user_info (id, username, password, email, avatar, status, permissions, created)
+VALUES (3, 'Doug Lea', '$2a$10$K9X9H9SSI7Ap6cEtTXY55ewGTHs2IRj7APlbtaxJo.BLzdqMg2TQ2', 'aka@qq.com',
+        'https://img0.baidu.com/it/u=869010084,3883818022&fm=253', 0, 'ROLE_user,user.edit', '2021-04-03 22:59:56');
 
 SET FOREIGN_KEY_CHECKS = 1;
