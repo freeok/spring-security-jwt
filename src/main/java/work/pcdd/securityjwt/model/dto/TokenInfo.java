@@ -19,6 +19,13 @@ public class TokenInfo implements Serializable {
      */
     private Long tokenTimeout;
     private Long loginId;
+    /**
+     * 用户名、邮箱、手机号
+     */
+    private String loginType;
+    /**
+     * pc、webapp、app
+     */
     private String loginDevice;
 
 }
