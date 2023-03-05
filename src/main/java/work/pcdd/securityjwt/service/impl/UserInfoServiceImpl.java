@@ -1,7 +1,6 @@
 package work.pcdd.securityjwt.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -19,6 +18,8 @@ import work.pcdd.securityjwt.model.dto.UserInfoDTO;
 import work.pcdd.securityjwt.model.entity.UserInfo;
 import work.pcdd.securityjwt.service.IUserInfoService;
 
+import java.util.Objects;
+
 /**
  * @author pcdd
  * @date 2021-03-26
@@ -34,9 +35,20 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
 
     @Override
     public R login(LoginDTO loginDTO) {
-        // 根据username查询用户
-        UserInfo userInfo = this.getOne(new QueryWrapper<UserInfo>()
-                .eq("username", loginDTO.getUsername()));
+        log.info("checkUsernameAndPassword begin");
+        String loginType = loginDTO.getLoginType();
+        UserInfo userInfo = null;
+
+        // 根据username查询
+        if (Objects.equals(loginType, "username")) {
+            userInfo = this.getOne(new LambdaQueryWrapper<UserInfo>()
+                    .eq(UserInfo::getUsername, loginDTO.getUsername()));
+        }
+        // 根据email查询
+        if (Objects.equals(loginType, "email")) {
+            userInfo = this.getOne(new LambdaQueryWrapper<UserInfo>()
+                    .eq(UserInfo::getEmail, loginDTO.getUsername()));
+        }
 
         // 用户不存在
         Assert.notNull(userInfo, "用户名或密码错误");
@@ -46,12 +58,14 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         Assert.isTrue(userInfo.getStatus() != 0, "该账户被禁用");
 
         log.info("userInfo：{}", userInfo);
+        log.info("checkUsernameAndPassword end");
 
+        log.info("generateToken begin");
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         BeanUtils.copyProperties(userInfo, userInfoDTO);
-
         // 生成jwt token
-        String token = jwtUtils.generateToken(userInfoDTO);
+        String token = jwtUtils.generateToken(userInfoDTO, loginDTO);
+        log.info("generateToken end");
 
         LoginSuccess loginSuccess = new LoginSuccess();
         loginSuccess.setUserInfoDTO(userInfoDTO);
@@ -63,6 +77,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
     @Override
     public R checkToken() {
         TokenInfo tokenInfo = jwtUtils.getTokenInfo();
+        // userId
         Long loginId = tokenInfo.getLoginId();
 
         UserInfo userInfo = this.getOne(new LambdaQueryWrapper<UserInfo>()
