@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import work.pcdd.securityjwt.model.dto.LoginDTO;
 import work.pcdd.securityjwt.model.dto.TokenInfo;
 import work.pcdd.securityjwt.model.dto.UserInfoDTO;
 
@@ -31,35 +32,37 @@ public class JwtUtils {
     @Value("${jwt.token-name}")
     private String tokenName;
 
-    public String generateToken(UserInfoDTO userInfoDTO) {
-        return generateToken(userInfoDTO, expire);
+    public String generateToken(UserInfoDTO userInfoDTO, LoginDTO loginDTO) {
+        return generateToken(userInfoDTO, loginDTO, expire);
     }
 
     /**
      * 生成token
      *
      * @param userInfoDTO 用户信息
+     * @param loginDTO    登录信息
      * @param timeout     token有效期，单位秒
      */
-    public String generateToken(UserInfoDTO userInfoDTO, Long timeout) {
+    public String generateToken(UserInfoDTO userInfoDTO, LoginDTO loginDTO, Long timeout) {
         log.info("开始生成token");
         Date nowDate = new Date();
         Date expireDate = new Date(nowDate.getTime() + timeout * 1000);
 
         try {
             String tokenValue = JWT.create()
-                    // 签名由谁生成(可选)
-                    .withIssuer("auth0")
-                    // 生成签名的时间(可选)
-                    .withIssuedAt(nowDate)
                     // jwt的id，此处为用户id
                     .withAudience(String.valueOf(userInfoDTO.getId()))
                     // 签名过期的时间
                     .withExpiresAt(expireDate)
+                    // 生成签名的时间(可选)
+                    .withIssuedAt(nowDate)
+                    // 签名由谁生成(可选)
+                    .withIssuer("auth0")
                     // 携带自定义信息
-                    .withClaim("role", userInfoDTO.getRole())
                     .withClaim("tokenName", tokenName)
                     .withClaim("tokenPrefix", tokenPrefix)
+                    .withClaim("loginType", loginDTO.getLoginType())
+                    .withClaim("loginDevice", "PC")
                     // 使用HMAC256加密算法构建密钥信息,密钥是secret
                     .sign(Algorithm.HMAC256(secret));
 
@@ -114,15 +117,16 @@ public class JwtUtils {
         if (token == null) {
             return null;
         }
-
         String tokenValue = token.substring(token.indexOf(" ") + 1);
         DecodedJWT jwt = JWT.decode(tokenValue);
         TokenInfo tokenInfo = new TokenInfo();
         tokenInfo.setTokenName(jwt.getClaim("tokenName").asString());
         tokenInfo.setTokenPrefix(jwt.getClaim("tokenPrefix").asString());
         tokenInfo.setTokenValue(tokenValue);
-        tokenInfo.setLoginId(Long.valueOf(jwt.getAudience().get(0)));
         tokenInfo.setTokenTimeout((jwt.getExpiresAt().getTime() - System.currentTimeMillis()) / 1000);
+        tokenInfo.setLoginId(Long.valueOf(jwt.getAudience().get(0)));
+        tokenInfo.setLoginType(jwt.getClaim("loginType").asString());
+        tokenInfo.setLoginDevice(jwt.getClaim("loginDevice").asString());
 
         return tokenInfo;
     }

@@ -1,7 +1,9 @@
 package work.pcdd.securityjwt.model.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import java.io.Serializable;
@@ -13,6 +15,8 @@ import java.io.Serializable;
  * @date 2021/3/24
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class LoginDTO implements Serializable {
 
     @NotBlank(message = "用户名不能为空")
@@ -22,5 +26,8 @@ public class LoginDTO implements Serializable {
     @NotBlank(message = "密码不能为空")
     @Length(min = 6, max = 18, message = "密码长度在6-18之间")
     private String password;
+
+    @NotBlank(message = "登录类型不能为空")
+    private String loginType;
 
 }
