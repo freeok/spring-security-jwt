@@ -13,6 +13,7 @@ import work.pcdd.securityjwt.model.dto.LoginDTO;
 import work.pcdd.securityjwt.model.dto.LoginSuccess;
 import work.pcdd.securityjwt.model.dto.UserInfoDTO;
 import work.pcdd.securityjwt.model.entity.UserInfo;
+import work.pcdd.securityjwt.service.AuthenticationService;
 import work.pcdd.securityjwt.service.IUserInfoService;
 
 /**
@@ -27,13 +28,14 @@ public class AuthenticationController {
 
     private final JwtUtils jwtUtils;
     private final IUserInfoService userInfoService;
+    private final AuthenticationService authenticationService;
 
     /**
      * 登录
      */
     @PostMapping("/login")
     public R login(@Validated @RequestBody LoginDTO loginDTO) {
-        return userInfoService.login(loginDTO);
+        return authenticationService.login(loginDTO);
     }
 
     /**
@@ -42,7 +44,7 @@ public class AuthenticationController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/check")
     public R checkToken() {
-        return userInfoService.checkToken();
+        return authenticationService.checkToken();
     }
 
     /**

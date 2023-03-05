@@ -38,7 +38,7 @@ public class SecurityLatestConfig {
         return httpSecurity
                 .authorizeHttpRequests(o -> {
                     // 对于静态资源需要通过 requestMatchers 配置访问权限，对于方法可通过注解或配置类来控制权限
-                    o.requestMatchers("/image/**").anonymous();
+                    o.requestMatchers("/image/**").permitAll();
                     // 不加这句，无法访问公开API
                     o.anyRequest().permitAll();
                 })
@@ -73,11 +73,6 @@ public class SecurityLatestConfig {
     public PasswordEncoder passwordEncoder() {
         // 使用的密码比较方式，单参构造为加密强度(4-31)，默认10
         return new BCryptPasswordEncoder(10);
-    }
-
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter();
     }
 
 }
