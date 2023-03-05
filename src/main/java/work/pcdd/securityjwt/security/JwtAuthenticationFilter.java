@@ -1,7 +1,6 @@
 package work.pcdd.securityjwt.security;
 
 import com.auth0.jwt.JWT;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,11 +12,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import work.pcdd.securityjwt.common.util.JwtUtils;
-import work.pcdd.securityjwt.model.entity.UserInfo;
 import work.pcdd.securityjwt.service.IUserInfoService;
 
 import java.io.IOException;
@@ -59,14 +56,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // 获取token中的userId
             String userId = JWT.decode(token).getAudience().get(0);
 
-            // 根据 userId 查询 username
-            UserInfo userInfo = userInfoService.getOne(new LambdaQueryWrapper<UserInfo>()
-                    .select(UserInfo::getUsername)
-                    .eq(UserInfo::getId, userId));
-            Assert.notNull(userInfo, "用户不存在");
-
-            // token合法性通过，开始校验有效性（根据用户名判断持有此token的用户的当前状态是否正常）
-            UserDetails userDetails = customUserDetailsService.loadUserByUsername(userInfo.getUsername());
+            // token合法性通过，开始校验有效性（根据userId断持有此token的用户的当前状态是否正常）
+            UserDetails userDetails = customUserDetailsService.loadUserByUsername(userId);
             log.info("UserDetails:" + userDetails);
             log.info("Authorities:" + userDetails.getAuthorities());
 

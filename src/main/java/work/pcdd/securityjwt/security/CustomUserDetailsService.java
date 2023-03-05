@@ -26,17 +26,15 @@ public class CustomUserDetailsService implements UserDetailsService {
     private IUserInfoService userInfoService;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
         log.info("开始执行 loadUserByUsername 方法");
 
         // 性能优化：从缓存中查询
         UserInfo userInfo = userInfoService.getOne(new LambdaQueryWrapper<UserInfo>()
-                .eq(UserInfo::getUsername, username));
+                .eq(UserInfo::getId, userId));
 
-        log.info("userInfo:{}", userInfo);
         Assert.notNull(userInfo, "用户不存在");
-        Assert.isTrue(userInfo.getStatus() != -1, "账户被锁定");
-        Assert.isTrue(userInfo.getStatus() != 0, "账户被禁用");
+        log.info("userInfo:{}", userInfo);
 
         log.info("开始授权（角色和权限）");
         return new CustomUser(userInfo,
