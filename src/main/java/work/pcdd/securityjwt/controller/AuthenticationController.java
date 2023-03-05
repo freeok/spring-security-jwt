@@ -1,8 +1,8 @@
 package work.pcdd.securityjwt.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
@@ -21,12 +21,12 @@ import work.pcdd.securityjwt.service.IUserInfoService;
  */
 @Slf4j
 @RestController
+@RequestMapping("/auth")
+@RequiredArgsConstructor
 public class AuthenticationController {
 
-    @Autowired
-    private JwtUtils jwtUtils;
-    @Autowired
-    private IUserInfoService userInfoService;
+    private final JwtUtils jwtUtils;
+    private final IUserInfoService userInfoService;
 
     /**
      * 登录
@@ -68,7 +68,7 @@ public class AuthenticationController {
      * 获取当前用户的token信息
      */
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/tokenInfo")
+    @GetMapping("/token-info")
     public R tokenInfo() {
         return R.ok(jwtUtils.getTokenInfo());
     }
@@ -77,7 +77,7 @@ public class AuthenticationController {
      * 获取当前用户的认证信息
      */
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/authentication")
+    @GetMapping("/auth-info")
     public R getAuthentication() {
         return R.ok("当前正在访问系统的用户的详细信息", SecurityContextHolder.getContext().getAuthentication());
     }
