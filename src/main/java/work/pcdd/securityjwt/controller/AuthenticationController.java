@@ -9,8 +9,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import work.pcdd.securityjwt.common.util.JwtUtils;
 import work.pcdd.securityjwt.common.util.R;
-import work.pcdd.securityjwt.model.dto.LoginDTO;
-import work.pcdd.securityjwt.model.dto.LoginSuccess;
+import work.pcdd.securityjwt.model.dto.AuthenticationRequest;
+import work.pcdd.securityjwt.model.dto.AuthenticationResponse;
 import work.pcdd.securityjwt.model.dto.UserInfoDTO;
 import work.pcdd.securityjwt.model.entity.UserInfo;
 import work.pcdd.securityjwt.service.AuthenticationService;
@@ -34,8 +34,8 @@ public class AuthenticationController {
      * 登录
      */
     @PostMapping("/login")
-    public R login(@Validated @RequestBody LoginDTO loginDTO) {
-        return authenticationService.login(loginDTO);
+    public R login(@Validated @RequestBody AuthenticationRequest authenticationRequest) {
+        return authenticationService.login(authenticationRequest);
     }
 
     /**
@@ -50,20 +50,21 @@ public class AuthenticationController {
     /**
      * 测试用，免密获取token，模拟id为2的用户
      */
-    @GetMapping("/token")
-    public R token(@RequestParam(required = false) Long timeout) {
-        UserInfo userInfo = userInfoService.getById(1);
+    @GetMapping("/quick-token")
+    public R quickToken(@RequestParam(required = false) Long timeout) {
+        UserInfo userInfo = userInfoService.getById(2);
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         BeanUtils.copyProperties(userInfo, userInfoDTO);
 
-        LoginDTO loginDTO = new LoginDTO(null, null, "username");
-        String token = jwtUtils.generateToken(userInfoDTO, loginDTO, timeout);
+        AuthenticationRequest authenticationRequest = new AuthenticationRequest(null, null, "username");
+        String token = jwtUtils.generateToken(userInfoDTO, authenticationRequest, timeout);
 
-        LoginSuccess loginSuccess = new LoginSuccess();
-        loginSuccess.setUserInfoDTO(userInfoDTO);
-        loginSuccess.setTokenInfo(jwtUtils.getTokenInfo(token));
+        AuthenticationResponse authenticationResponse = AuthenticationResponse.builder()
+                .tokenInfo(jwtUtils.getTokenInfo(token))
+                .userInfoDTO(userInfoDTO)
+                .build();
 
-        return R.ok(loginSuccess);
+        return R.ok(authenticationResponse);
     }
 
     /**

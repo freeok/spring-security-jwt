@@ -17,7 +17,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginDTO implements Serializable {
+public class AuthenticationRequest implements Serializable {
 
     @NotBlank(message = "用户名不能为空")
     @Length(max = 20, message = "用户名长度不能超过20位")

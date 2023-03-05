@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import work.pcdd.securityjwt.model.dto.LoginDTO;
+import work.pcdd.securityjwt.model.dto.AuthenticationRequest;
 import work.pcdd.securityjwt.model.dto.TokenInfo;
 import work.pcdd.securityjwt.model.dto.UserInfoDTO;
 
@@ -32,18 +32,18 @@ public class JwtUtils {
     @Value("${jwt.token-name}")
     private String tokenName;
 
-    public String generateToken(UserInfoDTO userInfoDTO, LoginDTO loginDTO) {
-        return generateToken(userInfoDTO, loginDTO, expire);
+    public String generateToken(UserInfoDTO userInfoDTO, AuthenticationRequest authenticationRequest) {
+        return generateToken(userInfoDTO, authenticationRequest, expire);
     }
 
     /**
      * 生成token
      *
-     * @param userInfoDTO 用户信息
-     * @param loginDTO    登录信息
-     * @param timeout     token有效期，单位秒
+     * @param userInfoDTO           用户信息
+     * @param authenticationRequest 登录信息
+     * @param timeout               token有效期，单位秒
      */
-    public String generateToken(UserInfoDTO userInfoDTO, LoginDTO loginDTO, Long timeout) {
+    public String generateToken(UserInfoDTO userInfoDTO, AuthenticationRequest authenticationRequest, Long timeout) {
         log.info("开始生成token");
         Date nowDate = new Date();
         Date expireDate = new Date(nowDate.getTime() + timeout * 1000);
@@ -58,10 +58,10 @@ public class JwtUtils {
                     .withIssuedAt(nowDate)
                     // 签名由谁生成(可选)
                     .withIssuer("auth0")
-                    // 携带自定义信息
+                    // 携带自定义信息，禁止存放敏感信息！
                     .withClaim("tokenName", tokenName)
                     .withClaim("tokenPrefix", tokenPrefix)
-                    .withClaim("loginType", loginDTO.getLoginType())
+                    .withClaim("loginType", authenticationRequest.getLoginType())
                     .withClaim("loginDevice", "PC")
                     // 使用HMAC256加密算法构建密钥信息,密钥是secret
                     .sign(Algorithm.HMAC256(secret));

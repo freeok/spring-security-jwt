@@ -1,7 +1,7 @@
 package work.pcdd.securityjwt.service;
 
 import work.pcdd.securityjwt.common.util.R;
-import work.pcdd.securityjwt.model.dto.LoginDTO;
+import work.pcdd.securityjwt.model.dto.AuthenticationRequest;
 
 /**
  * @author pcdd
@@ -12,10 +12,10 @@ public interface AuthenticationService {
     /**
      * 用户登录
      *
-     * @param loginDto 登录DTO
+     * @param authenticationRequest 登录DTO
      * @return token
      */
-    R login(LoginDTO loginDto);
+    R login(AuthenticationRequest authenticationRequest);
 
     R checkToken();
 
