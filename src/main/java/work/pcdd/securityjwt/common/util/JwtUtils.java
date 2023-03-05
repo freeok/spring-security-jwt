@@ -51,7 +51,7 @@ public class JwtUtils {
         try {
             String tokenValue = JWT.create()
                     // jwt的id，此处为用户id
-                    .withAudience(String.valueOf(userInfoDTO.getId()))
+                    .withJWTId(String.valueOf(userInfoDTO.getId()))
                     // 签名过期的时间
                     .withExpiresAt(expireDate)
                     // 生成签名的时间(可选)
@@ -81,7 +81,7 @@ public class JwtUtils {
     public void verifyToken(String token) {
         try {
             // 从解密的token中获取userId
-            String userId = JWT.decode(token).getAudience().get(0);
+            String userId = JWT.decode(token).getId();
             log.info("jwt中的userId:{}", userId);
 
             // 验证上传的token私钥部分是否与密匙一致
@@ -124,7 +124,7 @@ public class JwtUtils {
         tokenInfo.setTokenPrefix(jwt.getClaim("tokenPrefix").asString());
         tokenInfo.setTokenValue(tokenValue);
         tokenInfo.setTokenTimeout((jwt.getExpiresAt().getTime() - System.currentTimeMillis()) / 1000);
-        tokenInfo.setLoginId(Long.valueOf(jwt.getAudience().get(0)));
+        tokenInfo.setLoginId(Long.valueOf(jwt.getId()));
         tokenInfo.setLoginType(jwt.getClaim("loginType").asString());
         tokenInfo.setLoginDevice(jwt.getClaim("loginDevice").asString());
 

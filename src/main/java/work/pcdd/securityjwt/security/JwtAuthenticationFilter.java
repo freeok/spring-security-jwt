@@ -15,7 +15,6 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import work.pcdd.securityjwt.common.util.JwtUtils;
-import work.pcdd.securityjwt.service.IUserInfoService;
 
 import java.io.IOException;
 
@@ -28,8 +27,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private JwtUtils jwtUtils;
-    @Autowired
-    private IUserInfoService userInfoService;
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
@@ -54,7 +51,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             log.info("token校验通过");
 
             // 获取token中的userId
-            String userId = JWT.decode(token).getAudience().get(0);
+            String userId = JWT.decode(token).getId();
 
             // token合法性通过，开始校验有效性（根据userId断持有此token的用户的当前状态是否正常）
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(userId);
