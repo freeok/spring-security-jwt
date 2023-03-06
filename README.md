@@ -19,8 +19,7 @@
 
 #### 使用说明
 
-1.
-调用 [AuthenticationController.java](https://github.com/pcdd-group/spring-security-jwt/blob/main/src/main/java/work/pcdd/securityjwt/controller/AuthenticationController.java)
+1. 调用 [AuthenticationController.java](https://github.com/pcdd-group/spring-security-jwt/blob/main/src/main/java/work/pcdd/securityjwt/controller/AuthenticationController.java)
 中的方法，获取token
 2. token放入header（key为Authorization，value为Bearer
    jwt字符串），然后调用 [TestController.java](https://github.com/pcdd-group/spring-security-jwt/blob/main/src/main/java/work/pcdd/securityjwt/controller/TestController.java)
