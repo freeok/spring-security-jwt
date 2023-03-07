@@ -21,7 +21,7 @@ public class CustomUser extends User {
     private final UserInfoDTO userInfoDTO;
 
     public CustomUser(UserInfo userInfo, Collection<? extends GrantedAuthority> authorities) {
-        super(userInfo.getUsername(),
+        super(String.valueOf(userInfo.getId()),
                 userInfo.getPassword(),
                 userInfo.getStatus() != 0,
                 true,
