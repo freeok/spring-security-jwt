@@ -9,9 +9,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import work.pcdd.securityjwt.model.dto.AuthenticationRequest;
-import work.pcdd.securityjwt.model.dto.TokenInfo;
-import work.pcdd.securityjwt.model.dto.UserInfoDTO;
+import work.pcdd.securityjwt.common.model.dto.AuthenticationRequest;
+import work.pcdd.securityjwt.common.model.dto.TokenInfo;
+import work.pcdd.securityjwt.common.model.dto.UserInfoDTO;
 
 import java.util.Date;
 

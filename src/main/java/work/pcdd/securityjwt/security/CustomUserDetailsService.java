@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import work.pcdd.securityjwt.model.entity.UserInfo;
+import work.pcdd.securityjwt.common.model.entity.UserInfo;
 import work.pcdd.securityjwt.service.IUserInfoService;
 
 /**

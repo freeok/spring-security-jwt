@@ -7,12 +7,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import work.pcdd.securityjwt.common.model.dto.AuthenticationRequest;
+import work.pcdd.securityjwt.common.model.dto.AuthenticationResponse;
+import work.pcdd.securityjwt.common.model.dto.UserInfoDTO;
+import work.pcdd.securityjwt.common.model.entity.UserInfo;
 import work.pcdd.securityjwt.common.util.JwtUtils;
 import work.pcdd.securityjwt.common.util.R;
-import work.pcdd.securityjwt.model.dto.AuthenticationRequest;
-import work.pcdd.securityjwt.model.dto.AuthenticationResponse;
-import work.pcdd.securityjwt.model.dto.UserInfoDTO;
-import work.pcdd.securityjwt.model.entity.UserInfo;
 import work.pcdd.securityjwt.service.AuthenticationService;
 import work.pcdd.securityjwt.service.IUserInfoService;
 

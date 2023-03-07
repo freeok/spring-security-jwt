@@ -1,7 +1,7 @@
 package work.pcdd.securityjwt.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import work.pcdd.securityjwt.model.entity.UserInfo;
+import work.pcdd.securityjwt.common.model.entity.UserInfo;
 
 /**
  * <p>

@@ -5,8 +5,8 @@ import lombok.Getter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
-import work.pcdd.securityjwt.model.dto.UserInfoDTO;
-import work.pcdd.securityjwt.model.entity.UserInfo;
+import work.pcdd.securityjwt.common.model.dto.UserInfoDTO;
+import work.pcdd.securityjwt.common.model.entity.UserInfo;
 
 import java.util.Collection;
 

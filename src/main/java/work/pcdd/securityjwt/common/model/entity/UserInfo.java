@@ -1,4 +1,4 @@
-package work.pcdd.securityjwt.model.entity;
+package work.pcdd.securityjwt.common.model.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;

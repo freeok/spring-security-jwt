@@ -1,4 +1,4 @@
-package work.pcdd.securityjwt.model.dto;
+package work.pcdd.securityjwt.common.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

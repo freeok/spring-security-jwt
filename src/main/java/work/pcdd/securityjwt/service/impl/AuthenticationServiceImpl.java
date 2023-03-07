@@ -7,13 +7,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import work.pcdd.securityjwt.common.model.dto.AuthenticationRequest;
+import work.pcdd.securityjwt.common.model.dto.AuthenticationResponse;
+import work.pcdd.securityjwt.common.model.dto.TokenInfo;
+import work.pcdd.securityjwt.common.model.dto.UserInfoDTO;
+import work.pcdd.securityjwt.common.model.entity.UserInfo;
 import work.pcdd.securityjwt.common.util.JwtUtils;
 import work.pcdd.securityjwt.common.util.R;
-import work.pcdd.securityjwt.model.dto.AuthenticationRequest;
-import work.pcdd.securityjwt.model.dto.AuthenticationResponse;
-import work.pcdd.securityjwt.model.dto.TokenInfo;
-import work.pcdd.securityjwt.model.dto.UserInfoDTO;
-import work.pcdd.securityjwt.model.entity.UserInfo;
 import work.pcdd.securityjwt.service.AuthenticationService;
 import work.pcdd.securityjwt.service.IUserInfoService;
 

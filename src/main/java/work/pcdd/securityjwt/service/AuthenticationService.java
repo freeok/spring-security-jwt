@@ -1,7 +1,7 @@
 package work.pcdd.securityjwt.service;
 
+import work.pcdd.securityjwt.common.model.dto.AuthenticationRequest;
 import work.pcdd.securityjwt.common.util.R;
-import work.pcdd.securityjwt.model.dto.AuthenticationRequest;
 
 /**
  * @author pcdd
