@@ -29,5 +29,9 @@
 #### 补充说明
 
 从 Spring Boot 2.7.0（Spring Security 5.7.1）开始，WebSecurityConfigurerAdapter
-已弃用，最新配置类写法请参考[SecurityLatestConfig.java](https://github.com/pcdd-group/spring-security-jwt/blob/main/src/main/java/work/pcdd/securityjwt/config/SecurityLatestConfig.java)
-；若仍要使用旧的配置类，请参考[SecurityConfig.java](https://github.com/pcdd-group/spring-security-jwt/blob/main/src/main/java/work/pcdd/securityjwt/config/SecurityConfig.java)
+已弃用，最新配置类写法请参考[SecurityLatestConfig.java](https://github.com/pcdd-group/spring-security-jwt/blob/main/src/main/java/work/pcdd/securityjwt/config/SecurityLatestConfig.java)；
+若仍要使用旧的配置类，请参考[SecurityConfig.java](https://github.com/pcdd-group/spring-security-jwt/blob/main/src/main/java/work/pcdd/securityjwt/config/SecurityConfig.java)
+
+更多新的配置方式：https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter <br>
+Spring Security 6.0 新特性：https://docs.spring.io/spring-security/reference/whats-new.html <br>
+学习JWT：https://jwt.io/
