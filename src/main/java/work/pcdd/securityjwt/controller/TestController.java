@@ -1,7 +1,9 @@
 package work.pcdd.securityjwt.controller;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import work.pcdd.securityjwt.common.util.R;
 
@@ -45,6 +47,16 @@ public class TestController {
     @GetMapping("/f6")
     public R isAnonymous() {
         return R.ok("这个接口只有匿名用户才能访问，已认证的用户反而无法访问");
+    }
+
+    /**
+     * Spring EL表达式应用举例：获取用户书架，只能获取token持有者的
+     * 此处principal.username为用户的id，见CustomUser的super构造参数
+     */
+    @PreAuthorize("principal.username == #userId.toString()")
+    @GetMapping("/f7")
+    public R getBookcase(@RequestParam Long userId, Authentication authentication) {
+        return R.ok(authentication);
     }
 
 }
