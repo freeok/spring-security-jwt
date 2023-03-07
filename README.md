@@ -11,7 +11,7 @@
 | MySQL               | 8       |
 | MyBatis-Plus        | 3.5.3.1 |
 
-JWT实现
+JWT 实现
 
 ```xml
 
@@ -32,8 +32,7 @@ JWT实现
 
 #### 使用说明
 
-1.
-调用 [AuthenticationController.java](https://github.com/pcdd-group/spring-security-jwt/blob/main/src/main/java/work/pcdd/securityjwt/controller/AuthenticationController.java)
+1. 调用 [AuthenticationController.java](https://github.com/pcdd-group/spring-security-jwt/blob/main/src/main/java/work/pcdd/securityjwt/controller/AuthenticationController.java)
 中的方法，获取token
 
 2. token放入header（key为Authorization，value为Bearer
