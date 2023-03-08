@@ -1,6 +1,5 @@
 package work.pcdd.securityjwt.common.exception;
 
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -28,16 +27,6 @@ import java.util.List;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
-    /**
-     * 捕获JWT校验异常
-     */
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(JWTVerificationException.class)
-    public R handler(JWTVerificationException e) {
-        log.error("JWT校验异常：", e);
-        return R.fail(400, e.getMessage());
-    }
 
     /**
      * 捕获Spring断言异常

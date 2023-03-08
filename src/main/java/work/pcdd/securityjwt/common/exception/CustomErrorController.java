@@ -53,6 +53,7 @@ public class CustomErrorController extends BasicErrorController {
         // -1 表示 Filter 中发生异常，无法被全局异常捕获
         map.put("code", -1);
 
+        // 捕获 Filter 中的异常
         if (ex instanceof Exception e) {
             // JWT校验异常，此处使用了JDK16特性：instanceof增强
             if (ex instanceof JWTVerificationException) {
