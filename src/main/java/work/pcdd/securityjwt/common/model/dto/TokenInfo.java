@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 /**
  * @author pcdd
- * @date 2022/12/12 22:58
+ * create by 2022/12/12 22:58
  */
 @Data
 public class TokenInfo implements Serializable {

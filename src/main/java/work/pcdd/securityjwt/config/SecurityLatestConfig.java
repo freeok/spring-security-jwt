@@ -20,7 +20,7 @@ import work.pcdd.securityjwt.security.JwtAuthenticationFilter;
  * 从 Spring Boot 2.7.0（Spring Security 5.7.1）开始，WebSecurityConfigurerAdapter 已弃用
  *
  * @author pcdd
- * @date 2022/12/12
+ * create by 2022/12/12
  */
 @Configuration
 // @EnableGlobalMethodSecurity 已弃用

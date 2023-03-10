@@ -1,5 +1,4 @@
 server:
-  port: 8181
   servlet:
     encoding:
       charset: UTF-8
@@ -17,7 +16,6 @@ spring:
       serverTimezone=Asia/Shanghai
       &useUnicode=true
       &characterEncoding=utf8
-      &useSSL=true
     username: root
     password: root
 

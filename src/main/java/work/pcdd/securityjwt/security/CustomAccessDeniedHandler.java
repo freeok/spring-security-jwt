@@ -19,7 +19,7 @@ import java.io.PrintWriter;
  * 其实这个类可以不用写，通过捕获AccessDeniedException异常即可，若两者都写了，则优先捕获全局异常
  *
  * @author pcdd
- * @date 2021/3/24
+ * create by 2021/3/24
  */
 @Slf4j
 @Component

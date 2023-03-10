@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 /**
  * @author pcdd
- * @date 2021/4/3
+ * create by 2021/4/3
  */
 @Data
 public class UserInfoDTO implements Serializable {

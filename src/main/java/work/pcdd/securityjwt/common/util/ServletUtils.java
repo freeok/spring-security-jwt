@@ -15,7 +15,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  * UtilityClass注解：将类标记为final，并且类、内部类中的方法、字段都标记为static
  *
  * @author pcdd
- * @date 2022/3/1
+ * create by 2022/3/1
  */
 @UtilityClass
 public class ServletUtils {

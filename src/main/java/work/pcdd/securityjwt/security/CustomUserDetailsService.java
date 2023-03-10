@@ -16,7 +16,7 @@ import work.pcdd.securityjwt.service.IUserInfoService;
  * 授权
  *
  * @author pcdd
- * @date 2021/3/27
+ * create by 2021/3/27
  */
 @Slf4j
 @Service

@@ -5,7 +5,7 @@ import work.pcdd.securityjwt.common.util.R;
 
 /**
  * @author pcdd
- * @date 2023/03/05 16:14
+ * create by 2023/03/05 16:14
  */
 public interface AuthenticationService {
 

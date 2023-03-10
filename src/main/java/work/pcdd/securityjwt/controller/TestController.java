@@ -9,7 +9,7 @@ import work.pcdd.securityjwt.common.util.R;
 
 /**
  * @author pcdd
- * @date 2022/6/5
+ * create by 2022/6/5
  */
 @RestController
 public class TestController {
@@ -22,13 +22,13 @@ public class TestController {
     @PreAuthorize("hasRole('user')")
     @GetMapping("/f2")
     public R hasRoleUser() {
-        return R.ok("user接口调用成功！");
+        return R.ok("user 接口调用成功！");
     }
 
     @PreAuthorize("hasRole('admin')")
     @GetMapping("/f3")
     public R hasRoleAdmin() {
-        return R.ok("admin接口调用成功！");
+        return R.ok("admin 接口调用成功！");
     }
 
     @PreAuthorize("hasAuthority('user.view')")
@@ -50,8 +50,8 @@ public class TestController {
     }
 
     /**
-     * Spring EL表达式应用举例：获取用户书架，只能获取token持有者的
-     * 此处principal.username为用户的id，见CustomUser的super构造参数
+     * Spring EL 表达式应用举例：获取用户书架，只能获取token持有者的
+     * principal.username 为用户 id，见 CustomUser 的 super构造参数
      */
     @PreAuthorize("hasRole('user') and principal.username == #userId.toString()")
     @GetMapping("/f7")

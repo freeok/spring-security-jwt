@@ -30,7 +30,7 @@ import java.util.Map;
  * 目前使用的是第2种方法，因为在SpringBoot2.6.x版本 ErrorController已是一个空接口
  *
  * @author pcdd
- * @date 2022/6/4
+ * create by 2022/6/4
  */
 @Slf4j
 @Component

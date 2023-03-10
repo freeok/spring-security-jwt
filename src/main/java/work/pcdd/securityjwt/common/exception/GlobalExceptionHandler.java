@@ -22,7 +22,7 @@ import java.util.List;
  * 不要捕获Exception异常，会使Spring Security自定义异常失效！
  *
  * @author pcdd
- * @date 2021/2/23
+ * create by 2021/2/23
  */
 @Slf4j
 @RestControllerAdvice

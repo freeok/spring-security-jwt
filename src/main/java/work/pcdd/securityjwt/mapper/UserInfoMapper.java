@@ -10,7 +10,7 @@ import work.pcdd.securityjwt.common.model.entity.UserInfo;
  * </p>
  *
  * @author pcdd
- * @date 2021-03-26
+ * create by 2021-03-26
  */
 @Repository
 public interface UserInfoMapper extends BaseMapper<UserInfo> {

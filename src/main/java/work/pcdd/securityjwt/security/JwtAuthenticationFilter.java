@@ -25,7 +25,7 @@ import java.io.IOException;
  * 建议：在Spring环境下使用Filter，继承OncePerRequestFilter，而非实现Filter接口
  *
  * @author pcdd
- * @date 2021/3/27
+ * create by 2021/3/27
  */
 @Slf4j
 @Component
@@ -39,6 +39,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private String tokenPrefix;
     @Value("${jwt.token-name}")
     private String tokenName;
+
+    /**
+     * doFilterInternal方法中的逻辑是只要header中有jwt，就会经过该过滤器
+     * 因此公开的API也会走一遍doFilterInternal的流程，这对性能有一定影响，而且是不必要的
+     * 2种解决方法，前端请求公开API时不携带token；后端重写如下shouldNotFilter方法
+     *
+     * @return true表示不过滤，false反之
+     */
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        // do something...
+        return false;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse resp, FilterChain filterChain) throws ServletException, IOException {

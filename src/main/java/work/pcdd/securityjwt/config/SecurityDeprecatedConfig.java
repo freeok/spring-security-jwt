@@ -1,6 +1,8 @@
 // package work.pcdd.securityjwt.config;
 //
+// import lombok.RequiredArgsConstructor;
 // import org.springframework.context.annotation.Bean;
+// import org.springframework.context.annotation.Configuration;
 // import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 // import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 // import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -17,12 +19,12 @@
 //  * 从Spring Boot 2.7.0（Spring Security 5.7.1）开始，WebSecurityConfigurerAdapter 已弃用
 //  *
 //  * @author pcdd
-//  * @date 2021/3/26
+//  * create by 2021/3/26
 //  */
 // @Deprecated
-// // @Configuration
-// // @RequiredArgsConstructor
-// public class SecurityConfig extends WebSecurityConfigurerAdapter {
+// @Configuration
+// @RequiredArgsConstructor
+// public class SecurityDeprecatedConfig extends WebSecurityConfigurerAdapter {
 //
 //     private CustomUserDetailsService userDetailsService;
 //     /**

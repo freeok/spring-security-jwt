@@ -12,7 +12,7 @@ import java.io.Serializable;
  * 用户登录实体类
  *
  * @author pcdd
- * @date 2021/3/24
+ * create by 2021/3/24
  */
 @Data
 @NoArgsConstructor
