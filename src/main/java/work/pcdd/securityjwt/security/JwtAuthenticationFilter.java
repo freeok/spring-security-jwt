@@ -20,6 +20,10 @@ import work.pcdd.securityjwt.common.util.JwtUtils;
 import java.io.IOException;
 
 /**
+ * OncePerRequestFilter可以保证一次外部请求，只执行一次过滤方法，对于服务器内部之间的forward等请求，不会再次执行过滤方法
+ * 主要目的是为了兼容不同的WEB容器，因为Servlet版本不同，执行的过程也不同（2.3过滤一切请求，2.4只过滤外部请求）
+ * 建议：在Spring环境下使用Filter，继承OncePerRequestFilter，而非实现Filter接口
+ *
  * @author pcdd
  * @date 2021/3/27
  */
