@@ -80,10 +80,14 @@ public class CustomErrorController extends BasicErrorController {
         // return super.errorHtml(request, response);
         response.setContentType("application/json;charset=utf-8");
         response.setStatus(HttpStatus.NOT_FOUND.value());
+
+        Map<String, Object> errorAttributes = this.getErrorAttributes(request, this.getErrorAttributeOptions(request, MediaType.APPLICATION_JSON));
         // 即使设置了default-property-inclusion: non_null，此处data字段为null时仍会显示
         response.getWriter()
-                .write(new ObjectMapper().writeValueAsString(
-                        R.fail(404, "请求的资源不存在")));
+                .write(new ObjectMapper()
+                        .writeValueAsString(
+                                R.fail((Integer) errorAttributes.get("status"), (String) errorAttributes.get("message"))));
+
         return null;
     }
 
