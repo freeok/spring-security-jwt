@@ -5,10 +5,10 @@
 | 依赖                  | 版本      |
 |---------------------|---------|
 | JDK                 | 17      |
-| Spring Boot         | 3.0.4   |
-| Spring Security     | 6.0.2   |
-| java-jwt(com.auth0) | 4.3.0   |
-| MySQL               | 8       |
+| Spring Boot         | 3.1.4   |
+| Spring Security     | 6.1.4   |
+| java-jwt(com.auth0) | 4.4.0   |
+| MySQL               | 8.1.0   |
 | MyBatis-Plus        | 3.5.3.1 |
 
 JWT 实现
@@ -32,8 +32,7 @@ JWT 实现
 
 #### 使用说明
 
-1.
-调用 [AuthenticationController.java](https://github.com/pcdd-group/spring-security-jwt/blob/main/src/main/java/work/pcdd/securityjwt/controller/AuthenticationController.java)
+1. 调用 [AuthenticationController.java](https://github.com/pcdd-group/spring-security-jwt/blob/main/src/main/java/work/pcdd/securityjwt/controller/AuthenticationController.java)
 中的方法，获取token
 
 2. token放入header（key为Authorization，value为Bearer
@@ -49,4 +48,4 @@ JWT 实现
 
 更多新的配置方式：https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter <br>
 Spring Security 6.0 新特性：https://docs.spring.io/spring-security/reference/whats-new.html <br>
-学习JWT：https://jwt.io/
+学习 JWT：https://jwt.io/

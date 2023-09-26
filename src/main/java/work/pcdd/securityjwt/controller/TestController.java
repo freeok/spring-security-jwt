@@ -53,7 +53,7 @@ public class TestController {
      * Spring EL 表达式应用举例：获取用户书架，只能获取token持有者的
      * principal.username 为用户 id，见 CustomUser 的 super构造参数
      */
-    @PreAuthorize("hasRole('user') and principal.username == #userId.toString()")
+    @PreAuthorize("hasRole('admin') and principal.username == #userId.toString()")
     @GetMapping("/f7")
     public R getBookcase(@RequestParam Long userId, Authentication authentication) {
         return R.ok(authentication);

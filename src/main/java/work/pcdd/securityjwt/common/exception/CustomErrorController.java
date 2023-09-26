@@ -66,6 +66,7 @@ public class CustomErrorController extends BasicErrorController {
             map.put("msg", e.getMessage());
         } else {
             Map<String, Object> originalMsgMap = this.getErrorAttributes(request, this.getErrorAttributeOptions(request, MediaType.ALL));
+            originalMsgMap.remove("trace");
             map.put("data", originalMsgMap);
         }
 
